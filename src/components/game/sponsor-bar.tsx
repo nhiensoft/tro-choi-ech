@@ -13,7 +13,7 @@ export function SponsorBar() {
   return (
     <div
       className="fixed top-0 left-0 right-0 z-50 flex items-stretch"
-      style={{ background: "#ffffff", borderBottom: "1px solid rgba(0,0,0,0.08)" }}
+      style={{ background: "#ffffff", borderBottom: "1px solid rgba(0,0,0,0.08)", height: "48px" }}
     >
       {SECTIONS.map((section, i) => (
         <div
@@ -23,7 +23,7 @@ export function SponsorBar() {
             borderRight: i < SECTIONS.length - 1 ? "1px solid rgba(0,0,0,0.08)" : "none",
           }}
         >
-          <div className="relative" style={{ height: "clamp(36px, 5.5vw, 72px)", width: "100%" }}>
+          <div className="relative" style={{ height: "40px", width: "100%" }}>
             <Image
               src={section.src}
               alt={section.alt}

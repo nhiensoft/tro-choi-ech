@@ -12,7 +12,7 @@ export function ViewerCompletion() {
   }, [play]);
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen gap-8 p-8 overflow-hidden">
+    <div className="relative flex flex-col items-center justify-center min-h-screen gap-8 px-8 pb-8 pt-12 overflow-hidden">
       <DecorativeBg />
 
       <div className="relative z-10 flex flex-col items-center gap-8 text-center max-w-2xl">

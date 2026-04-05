@@ -60,7 +60,7 @@ export function ViewerAwards({ state }: { state: GameState }) {
 
   if (!state.awardsOrder) {
     return (
-      <div className="relative flex items-center justify-center min-h-screen overflow-hidden">
+      <div className="relative flex items-center justify-center min-h-screen pt-12 overflow-hidden">
         <DecorativeBg />
         <div className="relative z-10 flex items-center gap-3">
           <div className="w-2 h-2 rounded-full animate-gold-pulse" style={{ background: "#8B6914" }} />
@@ -82,7 +82,7 @@ export function ViewerAwards({ state }: { state: GameState }) {
   const isFirstRevealed = revealed >= 3;
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen gap-8 p-8 overflow-hidden">
+    <div className="relative flex flex-col items-center justify-center min-h-screen gap-8 px-8 pb-8 pt-12 overflow-hidden">
       <DecorativeBg />
 
       {/* Main awards view */}

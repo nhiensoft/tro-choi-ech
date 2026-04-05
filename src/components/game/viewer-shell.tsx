@@ -16,7 +16,7 @@ export function ViewerShell() {
 
   if (!state) {
     return (
-      <div className="relative flex items-center justify-center min-h-screen overflow-hidden">
+      <div className="relative flex items-center justify-center min-h-screen pt-12 overflow-hidden">
         <DecorativeBg />
         <SponsorBar />
         <div className="relative z-10 flex items-center gap-3">

@@ -4,7 +4,7 @@ import { DecorativeBg } from "./decorative-bg";
 
 export function ViewerWaiting() {
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen gap-8 p-8 overflow-hidden">
+    <div className="relative flex flex-col items-center justify-center min-h-screen gap-8 px-8 pb-8 pt-12 overflow-hidden">
       <DecorativeBg />
 
       {/* Content layer */}
