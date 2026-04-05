@@ -45,8 +45,29 @@ type Dispatch = (a: never) => Promise<unknown>;
 
 function InputControls({ dispatch }: { dispatch: Dispatch }) {
   const [names, setNames] = useState(["", "", ""]);
-  const [photos, setPhotos] = useState(["", "", ""]);
+  const [previews, setPreviews] = useState<(string | null)[]>([null, null, null]);
+  const [uploading, setUploading] = useState<boolean[]>([false, false, false]);
   const [error, setError] = useState("");
+
+  const handleUpload = async (file: File, idx: number) => {
+    setUploading((prev) => { const n = [...prev]; n[idx] = true; return n; });
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      form.append("teamIdx", String(idx));
+      const res = await fetch("/api/game/upload", { method: "POST", body: form });
+      if (!res.ok) throw new Error("Upload failed");
+      const { url } = await res.json();
+      // Show local preview
+      setPreviews((prev) => { const n = [...prev]; n[idx] = URL.createObjectURL(file); return n; });
+      // Save photo URL to game state
+      dispatch({ type: "SET_PHOTO", teamIdx: idx, url } as never);
+    } catch {
+      setError(`Upload ảnh đội ${idx + 1} thất bại`);
+    } finally {
+      setUploading((prev) => { const n = [...prev]; n[idx] = false; return n; });
+    }
+  };
 
   const handleStart = () => {
     const trimmed = names.map((n) => n.trim());
@@ -62,13 +83,6 @@ function InputControls({ dispatch }: { dispatch: Dispatch }) {
       type: "SET_TEAMS",
       teams: trimmed as [string, string, string],
     } as never);
-
-    // Save photos after teams are set
-    photos.forEach((url, i) => {
-      if (url.trim()) {
-        dispatch({ type: "SET_PHOTO", teamIdx: i, url: url.trim() } as never);
-      }
-    });
   };
 
   return (
@@ -88,22 +102,26 @@ function InputControls({ dispatch }: { dispatch: Dispatch }) {
             }}
             className="h-9 border"
           />
-          <Input
-            placeholder="URL ảnh đội (tuỳ chọn)..."
-            value={photos[i]}
-            onChange={(e) => {
-              const next = [...photos];
-              next[i] = (e.target as HTMLInputElement).value;
-              setPhotos(next);
-            }}
-            className="h-8 border text-xs"
-          />
-          {photos[i] && (
+          <label className="flex items-center gap-2 cursor-pointer text-xs text-muted-foreground hover:text-foreground transition-colors">
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = (e.target as HTMLInputElement).files?.[0];
+                if (file) handleUpload(file, i);
+              }}
+            />
+            <span className="px-3 py-1.5 rounded-md border bg-background hover:bg-muted transition-colors">
+              {uploading[i] ? "Đang tải..." : previews[i] ? "Đổi ảnh" : "Tải ảnh đội"}
+            </span>
+            {previews[i] && <span className="text-green-600">Đã tải</span>}
+          </label>
+          {previews[i] && (
             <img
-              src={photos[i]}
+              src={previews[i]!}
               alt={`Preview ${label}`}
               className="w-full h-20 object-cover rounded-md border"
-              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
             />
           )}
         </div>
@@ -336,11 +354,7 @@ function ScoringControls({ state, dispatch }: { state: GameState; dispatch: Disp
     1: String(state.scores[1] ?? ""),
     2: String(state.scores[2] ?? ""),
   });
-  const [photos, setPhotos] = useState<Record<number, string>>({
-    0: state.teamPhotos[0] ?? "",
-    1: state.teamPhotos[1] ?? "",
-    2: state.teamPhotos[2] ?? "",
-  });
+  const [uploading, setUploading] = useState<Record<number, boolean>>({ 0: false, 1: false, 2: false });
   const [error, setError] = useState("");
 
   const handleSaveScore = (idx: number) => {
@@ -349,34 +363,38 @@ function ScoringControls({ state, dispatch }: { state: GameState; dispatch: Disp
     dispatch({ type: "SET_SCORE", teamIdx: idx, score: val } as never);
   };
 
-  const handleSavePhoto = (idx: number) => {
-    if (!photos[idx].trim()) return;
-    dispatch({ type: "SET_PHOTO", teamIdx: idx, url: photos[idx].trim() } as never);
+  const handleUpload = async (file: File, idx: number) => {
+    setUploading((prev) => ({ ...prev, [idx]: true }));
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      form.append("teamIdx", String(idx));
+      const res = await fetch("/api/game/upload", { method: "POST", body: form });
+      if (!res.ok) throw new Error("Upload failed");
+      const { url } = await res.json();
+      dispatch({ type: "SET_PHOTO", teamIdx: idx, url } as never);
+    } catch {
+      setError(`Upload ảnh đội ${idx + 1} thất bại`);
+    } finally {
+      setUploading((prev) => ({ ...prev, [idx]: false }));
+    }
   };
 
   const handlePublish = () => {
-    // Check all scores entered
     const allScores = [0, 1, 2].map((i) => Number(scores[i]));
     if (allScores.some(isNaN)) {
       setError("Nhập đủ điểm cho 3 đội");
       return;
     }
 
-    // Save all scores first
     for (let i = 0; i < 3; i++) {
       dispatch({ type: "SET_SCORE", teamIdx: i, score: allScores[i] } as never);
-      if (photos[i].trim()) {
-        dispatch({ type: "SET_PHOTO", teamIdx: i, url: photos[i].trim() } as never);
-      }
     }
 
-    // Rank: highest score first
     const ranked = [0, 1, 2].sort((a, b) => allScores[b] - allScores[a]);
     const order: [number, number, number] = [ranked[0], ranked[1], ranked[2]];
-
     dispatch({ type: "SET_AWARDS", order } as never);
 
-    // Go to awards
     setTimeout(() => {
       dispatch({ type: "GO_TO_AWARDS", place: "3rd" } as never);
     }, 300);
@@ -387,32 +405,45 @@ function ScoringControls({ state, dispatch }: { state: GameState; dispatch: Disp
       <p className="text-sm font-semibold text-muted-foreground">Nhập điểm & ảnh đội</p>
 
       {[0, 1, 2].map((idx) => (
-        <div key={idx} className="space-y-1 p-3 rounded-lg bg-muted/30">
+        <div key={idx} className="space-y-2 p-3 rounded-lg bg-muted/30">
           <p className="text-xs font-bold">{state.teams[idx]}</p>
-          <div className="flex gap-2">
-            <Input
-              type="number"
-              placeholder="Điểm..."
-              value={scores[idx]}
-              onChange={(e) => {
-                setScores({ ...scores, [idx]: (e.target as HTMLInputElement).value });
-                if (error) setError("");
-              }}
-              onBlur={() => handleSaveScore(idx)}
-              className="h-8 border flex-1"
-            />
+          <Input
+            type="number"
+            placeholder="Điểm..."
+            value={scores[idx]}
+            onChange={(e) => {
+              setScores({ ...scores, [idx]: (e.target as HTMLInputElement).value });
+              if (error) setError("");
+            }}
+            onBlur={() => handleSaveScore(idx)}
+            className="h-8 border"
+          />
+          <div className="flex items-center gap-2">
+            <label className="cursor-pointer text-xs">
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = (e.target as HTMLInputElement).files?.[0];
+                  if (file) handleUpload(file, idx);
+                }}
+              />
+              <span className="px-3 py-1.5 rounded-md border bg-background hover:bg-muted transition-colors">
+                {uploading[idx] ? "Đang tải..." : state.teamPhotos[idx] ? "Đổi ảnh" : "Tải ảnh"}
+              </span>
+            </label>
+            {state.teamPhotos[idx] && (
+              <span className="text-xs text-green-600">Đã có ảnh</span>
+            )}
           </div>
-          <div className="flex gap-2">
-            <Input
-              placeholder="URL ảnh đội (tuỳ chọn)..."
-              value={photos[idx]}
-              onChange={(e) =>
-                setPhotos({ ...photos, [idx]: (e.target as HTMLInputElement).value })
-              }
-              onBlur={() => handleSavePhoto(idx)}
-              className="h-8 border flex-1 text-xs"
+          {state.teamPhotos[idx] && (
+            <img
+              src={state.teamPhotos[idx]}
+              alt={state.teams[idx]}
+              className="w-full h-16 object-cover rounded-md border"
             />
-          </div>
+          )}
         </div>
       ))}
 
