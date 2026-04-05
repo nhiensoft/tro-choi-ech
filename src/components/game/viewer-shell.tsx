@@ -9,6 +9,7 @@ import { ViewerMatchup } from "./viewer-matchup";
 import { ViewerRound } from "./viewer-round";
 import { ViewerCompletion } from "./viewer-completion";
 import { ViewerAwards } from "./viewer-awards";
+import { SponsorBar } from "./sponsor-bar";
 
 export function ViewerShell() {
   const { state, isConnected } = useGameSync();
@@ -17,6 +18,7 @@ export function ViewerShell() {
     return (
       <div className="relative flex items-center justify-center min-h-screen overflow-hidden">
         <DecorativeBg />
+        <SponsorBar />
         <div className="relative z-10 flex items-center gap-3">
           <div
             className="w-2.5 h-2.5 rounded-full animate-gold-pulse"
@@ -33,6 +35,7 @@ export function ViewerShell() {
 
   return (
     <div className="relative">
+      <SponsorBar />
       {/* Connection indicator */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
         <div

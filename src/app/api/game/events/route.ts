@@ -1,9 +1,12 @@
-import { getState, getVersion } from "@/lib/server-game-store";
+import { kv } from "@vercel/kv";
+import type { GameState } from "@/lib/game-types";
 
 export const dynamic = "force-dynamic";
 
-const POLL_INTERVAL = 500; // ms — check KV for changes every 500ms
+const POLL_INTERVAL = 300; // ms
 const HEARTBEAT_INTERVAL = 15000; // ms
+const KV_KEY = "game-state";
+const KV_VERSION_KEY = "game-version";
 
 export async function GET() {
   const encoder = new TextEncoder();
@@ -14,48 +17,48 @@ export async function GET() {
     async start(controller) {
       // Send initial state immediately
       try {
-        const state = await getState();
-        lastVersion = getVersion();
-        const payload = `data: ${JSON.stringify({ state, version: lastVersion })}\n\n`;
+        const [state, version] = await Promise.all([
+          kv.get<GameState>(KV_KEY),
+          kv.get<number>(KV_VERSION_KEY),
+        ]);
+        lastVersion = version ?? 0;
+        const payload = `data: ${JSON.stringify({ state: state ?? null, version: lastVersion })}\n\n`;
         controller.enqueue(encoder.encode(payload));
       } catch {
-        // ignore initial fetch error
+        // ignore
       }
 
-      // Poll KV for state changes
+      // Poll KV — single call to check version, only fetch state on change
       const pollTimer = setInterval(async () => {
         if (stopped) return;
         try {
-          const currentVersion = await getVersionFromKV();
-          if (currentVersion !== lastVersion) {
-            const state = await getState(true); // force refresh from KV
-            lastVersion = currentVersion;
-            const payload = `data: ${JSON.stringify({ state, version: currentVersion })}\n\n`;
-            controller.enqueue(encoder.encode(payload));
+          const version = await kv.get<number>(KV_VERSION_KEY) ?? 0;
+          if (version !== lastVersion) {
+            const state = await kv.get<GameState>(KV_KEY);
+            lastVersion = version;
+            controller.enqueue(
+              encoder.encode(`data: ${JSON.stringify({ state, version })}\n\n`)
+            );
           }
         } catch {
-          // KV read failed — skip this tick
+          // skip
         }
       }, POLL_INTERVAL);
 
-      // Heartbeat to keep connection alive
       const heartbeatTimer = setInterval(() => {
         if (stopped) return;
         try {
           controller.enqueue(encoder.encode(": heartbeat\n\n"));
         } catch {
-          // connection dead
+          // dead
         }
       }, HEARTBEAT_INTERVAL);
 
-      // Cleanup on cancel
       const cleanup = () => {
         stopped = true;
         clearInterval(pollTimer);
         clearInterval(heartbeatTimer);
       };
-
-      // Store cleanup ref for cancel()
       (controller as unknown as Record<string, () => void>).__cleanup = cleanup;
     },
     cancel(controller) {
@@ -73,11 +76,4 @@ export async function GET() {
       "X-Accel-Buffering": "no",
     },
   });
-}
-
-// Direct KV version check (lightweight — just reads version number)
-async function getVersionFromKV(): Promise<number> {
-  const { kv } = await import("@vercel/kv");
-  const version = await kv.get<number>("game-version");
-  return version ?? 0;
 }
