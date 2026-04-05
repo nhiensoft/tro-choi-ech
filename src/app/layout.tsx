@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Trò Chơi Hầu — Chặng 2",
-  description: "Bốc thăm vai trò và phản biện",
+  title: "Vùng Đất Kinh Đô — Chặng 2",
+  description: "Phản biện Website Du lịch Huế",
 };
 
 export default function RootLayout({

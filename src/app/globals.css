@@ -59,6 +59,15 @@
   --color-game-accent-foreground: var(--game-accent-foreground);
   --color-game-success: var(--game-success);
 
+  /* === Gold & Crimson game tokens === */
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-dim: var(--gold-dim);
+  --color-crimson: var(--crimson);
+  --color-imperial-bg: var(--imperial-bg);
+  --color-imperial-card: var(--imperial-card);
+  --color-imperial-card-2: var(--imperial-card-2);
+
   /* === Border radius (playful, rounded) === */
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -70,139 +79,98 @@
 }
 
 /* ============================================
-   LIGHT THEME (default) — Game Show Vibrant
+   DARK IMPERIAL THEME (default)
+   Vùng Đất Kinh Đô — Huế Game Show
    ============================================ */
 :root {
+  /* --- Imperial palette --- */
+  --gold:            #d4a843;
+  --gold-light:      #f0cb6a;
+  --gold-dim:        #8a6a20;
+  --crimson:         #c41e3a;
+  --imperial-bg:     #0a0e1a;
+  --imperial-card:   #131829;
+  --imperial-card-2: #1a2035;
+
   /* --- Base --- */
-  --background: oklch(0.984 0.003 247.858);    /* slate-50 #F8FAFC */
-  --foreground: oklch(0.208 0.042 265.755);    /* slate-900 #0F172A */
+  --background: #0a0e1a;
+  --foreground: #f0e8d0;        /* warm cream */
 
   /* --- Card --- */
-  --card: oklch(1 0 0);                         /* white */
-  --card-foreground: oklch(0.208 0.042 265.755);
+  --card: #131829;
+  --card-foreground: #f0e8d0;
 
   /* --- Popover --- */
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.208 0.042 265.755);
+  --popover: #131829;
+  --popover-foreground: #f0e8d0;
 
-  /* --- Primary: Violet (brand) --- */
-  --primary: oklch(0.541 0.281 293.009);        /* violet-600 #7C3AED */
-  --primary-foreground: oklch(0.985 0 0);       /* white */
+  /* --- Primary: Imperial Gold --- */
+  --primary: #d4a843;
+  --primary-foreground: #0a0e1a;
 
-  /* --- Secondary: Light Violet --- */
-  --secondary: oklch(0.969 0.016 293.756);      /* violet-50 #EDE9FE */
-  --secondary-foreground: oklch(0.432 0.232 292.759); /* violet-800 */
+  /* --- Secondary: Crimson --- */
+  --secondary: #2a1020;
+  --secondary-foreground: #f0e8d0;
 
   /* --- Muted --- */
-  --muted: oklch(0.968 0.007 247.858);          /* slate-100 #F1F5F9 */
-  --muted-foreground: oklch(0.554 0.046 257.417); /* slate-500 #64748B */
+  --muted: #1a2035;
+  --muted-foreground: #8a9ab8;
 
-  /* --- Accent: Orange CTA --- */
-  --accent: oklch(0.702 0.183 55.093);          /* orange-500 #F97316 */
-  --accent-foreground: oklch(1 0 0);            /* white */
+  /* --- Accent: Crimson Red --- */
+  --accent: #c41e3a;
+  --accent-foreground: #f0e8d0;
 
   /* --- Destructive --- */
-  --destructive: oklch(0.577 0.245 27.325);     /* red-500 */
+  --destructive: #e53535;
 
   /* --- Border / Input / Ring --- */
-  --border: oklch(0.929 0.013 255.508);         /* slate-200 #E2E8F0 */
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.541 0.281 293.009);           /* same as primary */
+  --border: rgba(212, 168, 67, 0.2);
+  --input: rgba(212, 168, 67, 0.15);
+  --ring: #d4a843;
 
   /* --- Chart colors --- */
-  --chart-1: oklch(0.541 0.281 293.009);        /* violet */
-  --chart-2: oklch(0.666 0.179 58.318);         /* amber */
-  --chart-3: oklch(0.588 0.158 241.966);        /* sky */
-  --chart-4: oklch(0.702 0.183 55.093);         /* orange */
-  --chart-5: oklch(0.627 0.194 149.214);        /* emerald */
+  --chart-1: #d4a843;
+  --chart-2: #8b5cf6;
+  --chart-3: #06b6d4;
+  --chart-4: #c41e3a;
+  --chart-5: #22c55e;
 
-  /* --- Radius (playful = larger) --- */
-  --radius: 0.75rem;                            /* 12px base */
+  /* --- Radius (elegant = moderate) --- */
+  --radius: 0.75rem;
 
-  /* --- Sidebar --- */
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-primary: oklch(0.541 0.281 293.009);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.969 0.016 293.756);
-  --sidebar-accent-foreground: oklch(0.432 0.232 292.759);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.541 0.281 293.009);
+  /* --- Sidebar (admin - slightly lighter dark) --- */
+  --sidebar: #0f1526;
+  --sidebar-foreground: #f0e8d0;
+  --sidebar-primary: #d4a843;
+  --sidebar-primary-foreground: #0a0e1a;
+  --sidebar-accent: #1a2035;
+  --sidebar-accent-foreground: #d4a843;
+  --sidebar-border: rgba(212, 168, 67, 0.15);
+  --sidebar-ring: #d4a843;
 
   /* =============================
      ROLE COLORS — Game specific
      ============================= */
 
-  /* Gen Z — Violet / Neon */
-  --role-genz: oklch(0.541 0.281 293.009);           /* #7C3AED */
-  --role-genz-light: oklch(0.969 0.016 293.756);     /* #EDE9FE */
-  --role-genz-foreground: oklch(1 0 0);
+  /* Gen Z — Vivid Violet (neon purple on dark) */
+  --role-genz: #8b5cf6;
+  --role-genz-light: rgba(139, 92, 246, 0.15);
+  --role-genz-foreground: #ffffff;
 
-  /* Nha dau tu — Amber / Gold */
-  --role-investor: oklch(0.666 0.179 58.318);        /* #D97706 */
-  --role-investor-light: oklch(0.987 0.022 95.277);  /* #FEF3C7 */
-  --role-investor-foreground: oklch(1 0 0);
+  /* Nha dau tu — Imperial Gold */
+  --role-investor: #d4a843;
+  --role-investor-light: rgba(212, 168, 67, 0.15);
+  --role-investor-foreground: #0a0e1a;
 
-  /* Khach du lich — Sky Blue */
-  --role-tourist: oklch(0.588 0.158 241.966);        /* #0284C7 */
-  --role-tourist-light: oklch(0.951 0.026 236.824);  /* #E0F2FE */
-  --role-tourist-foreground: oklch(1 0 0);
+  /* Khach du lich — Teal / Cyan */
+  --role-tourist: #06b6d4;
+  --role-tourist-light: rgba(6, 182, 212, 0.15);
+  --role-tourist-foreground: #0a0e1a;
 
   /* Game Accent (CTA) */
-  --game-accent: oklch(0.702 0.183 55.093);          /* #F97316 */
-  --game-accent-foreground: oklch(1 0 0);
-  --game-success: oklch(0.627 0.194 149.214);        /* #22C55E */
-}
-
-/* ============================================
-   DARK THEME (optional fallback)
-   ============================================ */
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.649 0.222 293.071);           /* violet-400 */
-  --primary-foreground: oklch(0.145 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.702 0.183 55.093);
-  --accent-foreground: oklch(0.145 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.649 0.222 293.071);
-  --chart-1: oklch(0.649 0.222 293.071);
-  --chart-2: oklch(0.769 0.188 70.08);
-  --chart-3: oklch(0.681 0.162 243.801);
-  --chart-4: oklch(0.702 0.183 55.093);
-  --chart-5: oklch(0.696 0.17 162.48);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.649 0.222 293.071);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.649 0.222 293.071);
-
-  --role-genz: oklch(0.649 0.222 293.071);
-  --role-genz-light: oklch(0.283 0.141 291.089);
-  --role-genz-foreground: oklch(1 0 0);
-  --role-investor: oklch(0.769 0.188 70.08);
-  --role-investor-light: oklch(0.344 0.098 66.29);
-  --role-investor-foreground: oklch(0.145 0 0);
-  --role-tourist: oklch(0.681 0.162 243.801);
-  --role-tourist-light: oklch(0.283 0.108 243.224);
-  --role-tourist-foreground: oklch(1 0 0);
-
-  --game-accent: oklch(0.702 0.183 55.093);
-  --game-accent-foreground: oklch(0.145 0 0);
-  --game-success: oklch(0.696 0.17 162.48);
+  --game-accent: #d4a843;
+  --game-accent-foreground: #0a0e1a;
+  --game-success: #22c55e;
 }
 
 /* ============================================
@@ -214,6 +182,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-color: #0a0e1a;
   }
   html {
     @apply font-sans;
@@ -221,15 +190,145 @@
 }
 
 /* ============================================
+   ANIMATED BACKGROUND — Imperial gradient sweep
+   ============================================ */
+@keyframes imperial-sweep {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes particle-float {
+  0%   { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+  33%  { transform: translateY(-18px) rotate(120deg); opacity: 1; }
+  66%  { transform: translateY(-8px) rotate(240deg); opacity: 0.7; }
+  100% { transform: translateY(0px) rotate(360deg); opacity: 0.6; }
+}
+
+@keyframes lotus-sway {
+  0%   { transform: rotate(-8deg) translateY(0px); }
+  50%  { transform: rotate(8deg) translateY(-6px); }
+  100% { transform: rotate(-8deg) translateY(0px); }
+}
+
+@keyframes lotus-sway-r {
+  0%   { transform: rotate(8deg) translateY(0px); }
+  50%  { transform: rotate(-8deg) translateY(-6px); }
+  100% { transform: rotate(8deg) translateY(0px); }
+}
+
+@keyframes gold-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%       { opacity: 0.9; transform: scale(1.15); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(212, 168, 67, 0.3), 0 0 40px rgba(212, 168, 67, 0.1); }
+  50%       { box-shadow: 0 0 40px rgba(212, 168, 67, 0.6), 0 0 80px rgba(212, 168, 67, 0.25); }
+}
+
+@keyframes glow-pulse-red {
+  0%, 100% { box-shadow: 0 0 20px rgba(196, 30, 58, 0.4), 0 0 40px rgba(196, 30, 58, 0.15); }
+  50%       { box-shadow: 0 0 40px rgba(196, 30, 58, 0.8), 0 0 80px rgba(196, 30, 58, 0.35); }
+}
+
+@keyframes text-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes reveal-scale {
+  0%   { transform: scale(0.8) rotateX(10deg); opacity: 0; }
+  100% { transform: scale(1) rotateX(0deg); opacity: 1; }
+}
+
+@keyframes timer-urgent {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.04); }
+}
+
+@keyframes float-up {
+  0%   { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0px); opacity: 1; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes ornament-glow {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(212, 168, 67, 0.4)); }
+  50%       { filter: drop-shadow(0 0 12px rgba(212, 168, 67, 0.9)); }
+}
+
+/* ============================================
    GAME-SPECIFIC UTILITIES
    ============================================ */
+
 /* Glow shadows for role cards */
 .shadow-glow-genz {
-  box-shadow: 0 0 24px oklch(0.541 0.281 293.009 / 0.3);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.5), 0 0 60px rgba(139, 92, 246, 0.2);
 }
 .shadow-glow-investor {
-  box-shadow: 0 0 24px oklch(0.666 0.179 58.318 / 0.3);
+  box-shadow: 0 0 30px rgba(212, 168, 67, 0.5), 0 0 60px rgba(212, 168, 67, 0.2);
 }
 .shadow-glow-tourist {
-  box-shadow: 0 0 24px oklch(0.588 0.158 241.966 / 0.3);
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.5), 0 0 60px rgba(6, 182, 212, 0.2);
+}
+
+/* Gold text gradient */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #f0cb6a 0%, #d4a843 40%, #b8860b 70%, #d4a843 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-shimmer 4s linear infinite;
+}
+
+/* Gold border glow */
+.border-gold-glow {
+  border-color: rgba(212, 168, 67, 0.6);
+  box-shadow: 0 0 16px rgba(212, 168, 67, 0.25), inset 0 0 16px rgba(212, 168, 67, 0.05);
+}
+
+/* Card imperial */
+.card-imperial {
+  background: linear-gradient(135deg, #131829 0%, #1a2035 100%);
+  border: 1px solid rgba(212, 168, 67, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 168, 67, 0.1);
+}
+
+/* Waiting dot pulse */
+.animate-gold-pulse {
+  animation: gold-pulse 1.8s ease-in-out infinite;
+}
+
+/* Card glow animation */
+.animate-glow-gold {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+.animate-glow-red {
+  animation: glow-pulse-red 1s ease-in-out infinite;
+}
+
+/* Timer urgent */
+.animate-timer-urgent {
+  animation: timer-urgent 0.5s ease-in-out infinite;
+}
+
+/* Float up entry */
+.animate-float-up {
+  animation: float-up 0.6s ease-out forwards;
+}
+
+/* Ornament glow */
+.animate-ornament {
+  animation: ornament-glow 2.5s ease-in-out infinite;
+}
+
+/* Shimmer for gold text */
+.animate-shimmer {
+  animation: text-shimmer 3s linear infinite;
 }

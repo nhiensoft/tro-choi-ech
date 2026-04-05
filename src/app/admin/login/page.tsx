@@ -41,7 +41,7 @@ export default function AdminLogin() {
         <CardContent className="space-y-4 pt-6">
           <div className="text-center space-y-1">
             <h1 className="text-2xl font-bold text-primary">Admin Panel</h1>
-            <p className="text-sm text-muted-foreground">Trò Chơi Hầu — Chặng 2</p>
+            <p className="text-sm text-muted-foreground">Vùng Đất Kinh Đô — Chặng 2</p>
           </div>
 
           <div className="space-y-1.5">

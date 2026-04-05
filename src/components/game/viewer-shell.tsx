@@ -1,6 +1,7 @@
 "use client";
 
 import { useGameSync } from "@/hooks/use-game-sync";
+import { DecorativeBg } from "./decorative-bg";
 import { ViewerWaiting } from "./viewer-waiting";
 import { ViewerRules } from "./viewer-rules";
 import { ViewerRoleReveal } from "./viewer-role-reveal";
@@ -14,8 +15,15 @@ export function ViewerShell() {
 
   if (!state) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-lg text-muted-foreground">Đang kết nối...</p>
+      <div className="relative flex items-center justify-center min-h-screen overflow-hidden">
+        <DecorativeBg />
+        <div className="relative z-10 flex items-center gap-3">
+          <div
+            className="w-2.5 h-2.5 rounded-full animate-gold-pulse"
+            style={{ background: "#d4a843" }}
+          />
+          <p style={{ color: "#8a9ab8", fontSize: "1.1rem" }}>Đang kết nối...</p>
+        </div>
       </div>
     );
   }
@@ -28,9 +36,15 @@ export function ViewerShell() {
       {/* Connection indicator */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
         <div
-          className={`w-2.5 h-2.5 rounded-full ${
-            isConnected ? "bg-green-500" : "bg-red-500 animate-pulse"
+          className={`w-2.5 h-2.5 rounded-full transition-colors duration-300 ${
+            isConnected ? "" : "animate-pulse"
           }`}
+          style={{
+            background: isConnected ? "#22c55e" : "#e53535",
+            boxShadow: isConnected
+              ? "0 0 6px rgba(34,197,94,0.6)"
+              : "0 0 6px rgba(229,53,53,0.6)",
+          }}
         />
       </div>
 
