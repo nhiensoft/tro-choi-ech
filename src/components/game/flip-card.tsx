@@ -8,28 +8,28 @@ const ROLE_STYLES: Record<
   { gradient: string; border: string; glow: string; text: string }
 > = {
   "Gen Z": {
-    gradient: "linear-gradient(135deg, #1a0d3a 0%, #2d1b69 50%, #3d2080 100%)",
-    border: "rgba(139,92,246,0.7)",
-    glow: "rgba(139,92,246,0.5)",
-    text: "#d4b8ff",
+    gradient: "linear-gradient(135deg, #f3eeff 0%, #ede0ff 50%, #e2ceff 100%)",
+    border: "rgba(124,58,237,0.55)",
+    glow: "rgba(124,58,237,0.35)",
+    text: "#5b21b6",
   },
   "Nhà đầu tư": {
-    gradient: "linear-gradient(135deg, #1a1200 0%, #3a2800 50%, #4a3200 100%)",
-    border: "rgba(212,168,67,0.7)",
-    glow: "rgba(212,168,67,0.5)",
-    text: "#f0cb6a",
+    gradient: "linear-gradient(135deg, #fdf8ec 0%, #f5e9c4 50%, #edd99a 100%)",
+    border: "rgba(139,105,20,0.55)",
+    glow: "rgba(139,105,20,0.35)",
+    text: "#6d4c0a",
   },
   "Khách du lịch": {
-    gradient: "linear-gradient(135deg, #001a1f 0%, #003340 50%, #004050 100%)",
-    border: "rgba(6,182,212,0.7)",
-    glow: "rgba(6,182,212,0.5)",
-    text: "#7de8ff",
+    gradient: "linear-gradient(135deg, #e8f9fd 0%, #c8eef8 50%, #a8e2f2 100%)",
+    border: "rgba(8,145,178,0.55)",
+    glow: "rgba(8,145,178,0.35)",
+    text: "#0e6e8c",
   },
   default: {
-    gradient: "linear-gradient(135deg, #0f1526 0%, #1a2035 100%)",
-    border: "rgba(212,168,67,0.7)",
-    glow: "rgba(212,168,67,0.4)",
-    text: "#d4a843",
+    gradient: "linear-gradient(135deg, #faf7f0 0%, #f5f0e8 100%)",
+    border: "rgba(139,105,20,0.55)",
+    glow: "rgba(139,105,20,0.3)",
+    text: "#8B6914",
   },
 };
 
@@ -78,50 +78,50 @@ export function FlipCard({
           )}
           style={{
             backfaceVisibility: "hidden",
-            background: "linear-gradient(135deg, #0f1526 0%, #131829 50%, #1a2035 100%)",
-            border: `2px solid ${!disabled && !flipped ? "rgba(212,168,67,0.45)" : "rgba(212,168,67,0.2)"}`,
+            background: "linear-gradient(135deg, #ffffff 0%, #faf7f0 50%, #f5f0e8 100%)",
+            border: `2px solid ${!disabled && !flipped ? "rgba(139,105,20,0.4)" : "rgba(139,105,20,0.18)"}`,
             boxShadow: !disabled && !flipped
-              ? "0 8px 32px rgba(0,0,0,0.6), 0 0 20px rgba(212,168,67,0.15)"
-              : "0 4px 16px rgba(0,0,0,0.5)",
+              ? "0 8px 32px rgba(139,105,20,0.15), 0 0 20px rgba(139,105,20,0.08)"
+              : "0 4px 16px rgba(139,105,20,0.08)",
             transition: "box-shadow 0.2s, border-color 0.2s",
           }}
         >
           {/* Imperial pattern corner dots */}
           <div
             className="absolute top-2 left-2 w-3 h-3 rounded-full"
-            style={{ background: "rgba(212,168,67,0.3)" }}
+            style={{ background: "rgba(139,105,20,0.3)" }}
           />
           <div
             className="absolute top-2 right-2 w-3 h-3 rounded-full"
-            style={{ background: "rgba(212,168,67,0.3)" }}
+            style={{ background: "rgba(139,105,20,0.3)" }}
           />
           <div
             className="absolute bottom-2 left-2 w-3 h-3 rounded-full"
-            style={{ background: "rgba(212,168,67,0.3)" }}
+            style={{ background: "rgba(139,105,20,0.3)" }}
           />
           <div
             className="absolute bottom-2 right-2 w-3 h-3 rounded-full"
-            style={{ background: "rgba(212,168,67,0.3)" }}
+            style={{ background: "rgba(139,105,20,0.3)" }}
           />
 
           {/* Lotus icon */}
           <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
-            <ellipse cx="18" cy="18" rx="5" ry="13" fill="rgba(212,168,67,0.25)" transform="rotate(-36 18 18)" />
-            <ellipse cx="18" cy="18" rx="5" ry="13" fill="rgba(212,168,67,0.25)" transform="rotate(0 18 18)" />
-            <ellipse cx="18" cy="18" rx="5" ry="13" fill="rgba(212,168,67,0.25)" transform="rotate(36 18 18)" />
-            <ellipse cx="18" cy="18" rx="5" ry="13" fill="rgba(212,168,67,0.2)" transform="rotate(72 18 18)" />
-            <ellipse cx="18" cy="18" rx="5" ry="13" fill="rgba(212,168,67,0.2)" transform="rotate(-72 18 18)" />
-            <circle cx="18" cy="18" r="5" fill="rgba(212,168,67,0.4)" />
+            <ellipse cx="18" cy="18" rx="5" ry="13" fill="rgba(139,105,20,0.22)" transform="rotate(-36 18 18)" />
+            <ellipse cx="18" cy="18" rx="5" ry="13" fill="rgba(139,105,20,0.22)" transform="rotate(0 18 18)" />
+            <ellipse cx="18" cy="18" rx="5" ry="13" fill="rgba(139,105,20,0.22)" transform="rotate(36 18 18)" />
+            <ellipse cx="18" cy="18" rx="5" ry="13" fill="rgba(139,105,20,0.18)" transform="rotate(72 18 18)" />
+            <ellipse cx="18" cy="18" rx="5" ry="13" fill="rgba(139,105,20,0.18)" transform="rotate(-72 18 18)" />
+            <circle cx="18" cy="18" r="5" fill="rgba(139,105,20,0.38)" />
           </svg>
 
           {/* "?" */}
           <span
             className="font-bold select-none"
             style={{
-              color: "#d4a843",
+              color: "#8B6914",
               fontSize: "3.5rem",
               lineHeight: 1,
-              textShadow: "0 0 20px rgba(212,168,67,0.5)",
+              textShadow: "0 0 20px rgba(139,105,20,0.3)",
             }}
           >
             ?
@@ -137,7 +137,7 @@ export function FlipCard({
             background: style.gradient,
             border: `2px solid ${style.border}`,
             boxShadow: flipped
-              ? `0 0 30px ${style.glow}, 0 0 60px ${style.glow.replace("0.5", "0.2")}, 0 8px 32px rgba(0,0,0,0.7)`
+              ? `0 0 30px ${style.glow}, 0 0 60px ${style.glow.replace("0.35", "0.15")}, 0 8px 32px rgba(0,0,0,0.08)`
               : "none",
           }}
         >

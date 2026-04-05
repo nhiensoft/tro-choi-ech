@@ -7,22 +7,22 @@ import { DecorativeBg } from "./decorative-bg";
 
 const ROLE_COLOR: Record<Role, { text: string; border: string; bg: string; glow: string }> = {
   "Gen Z": {
-    text: "#8b5cf6",
-    border: "rgba(139,92,246,0.4)",
-    bg: "rgba(139,92,246,0.1)",
-    glow: "rgba(139,92,246,0.25)",
+    text: "#7c3aed",
+    border: "rgba(124,58,237,0.35)",
+    bg: "rgba(124,58,237,0.08)",
+    glow: "rgba(124,58,237,0.18)",
   },
   "Nhà đầu tư": {
-    text: "#d4a843",
-    border: "rgba(212,168,67,0.4)",
-    bg: "rgba(212,168,67,0.1)",
-    glow: "rgba(212,168,67,0.25)",
+    text: "#8B6914",
+    border: "rgba(139,105,20,0.35)",
+    bg: "rgba(139,105,20,0.08)",
+    glow: "rgba(139,105,20,0.18)",
   },
   "Khách du lịch": {
-    text: "#06b6d4",
-    border: "rgba(6,182,212,0.4)",
-    bg: "rgba(6,182,212,0.1)",
-    glow: "rgba(6,182,212,0.25)",
+    text: "#0891b2",
+    border: "rgba(8,145,178,0.35)",
+    bg: "rgba(8,145,178,0.08)",
+    glow: "rgba(8,145,178,0.18)",
   },
 };
 
@@ -43,7 +43,7 @@ export function ViewerMatchup({ state }: { state: GameState }) {
         <div className="text-center space-y-3">
           <p
             className="font-semibold uppercase tracking-[0.25em]"
-            style={{ color: "#8a9ab8", fontSize: "0.85rem" }}
+            style={{ color: "#6b5e4f", fontSize: "0.85rem" }}
           >
             Cặp thi đấu
           </p>
@@ -56,15 +56,15 @@ export function ViewerMatchup({ state }: { state: GameState }) {
           <div className="flex items-center justify-center gap-2">
             <div
               className="h-px w-20"
-              style={{ background: "linear-gradient(to right, transparent, rgba(212,168,67,0.6))" }}
+              style={{ background: "linear-gradient(to right, transparent, rgba(139,105,20,0.55))" }}
             />
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-              <circle cx="5" cy="5" r="4" fill="#d4a843" opacity="0.7" />
-              <circle cx="5" cy="5" r="2" fill="#0a0e1a" />
+              <circle cx="5" cy="5" r="4" fill="#8B6914" opacity="0.7" />
+              <circle cx="5" cy="5" r="2" fill="#faf7f0" />
             </svg>
             <div
               className="h-px w-20"
-              style={{ background: "linear-gradient(to left, transparent, rgba(212,168,67,0.6))" }}
+              style={{ background: "linear-gradient(to left, transparent, rgba(139,105,20,0.55))" }}
             />
           </div>
         </div>
@@ -79,9 +79,9 @@ export function ViewerMatchup({ state }: { state: GameState }) {
                 key={round.roundNumber}
                 className="rounded-2xl overflow-hidden animate-float-up"
                 style={{
-                  background: "linear-gradient(135deg, rgba(19,24,41,0.95) 0%, rgba(26,32,53,0.95) 100%)",
-                  border: "1px solid rgba(212,168,67,0.2)",
-                  boxShadow: "0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(212,168,67,0.1)",
+                  background: "linear-gradient(135deg, rgba(255,255,255,0.97) 0%, rgba(250,247,240,0.97) 100%)",
+                  border: "1px solid rgba(139,105,20,0.18)",
+                  boxShadow: "0 8px 32px rgba(139,105,20,0.1), inset 0 1px 0 rgba(255,255,255,0.9)",
                   animationDelay: `${(round.roundNumber - 1) * 0.18}s`,
                   animationFillMode: "both",
                 }}
@@ -90,22 +90,22 @@ export function ViewerMatchup({ state }: { state: GameState }) {
                 <div
                   className="px-6 py-2 flex items-center gap-3"
                   style={{
-                    background: "rgba(212,168,67,0.08)",
-                    borderBottom: "1px solid rgba(212,168,67,0.15)",
+                    background: "rgba(139,105,20,0.06)",
+                    borderBottom: "1px solid rgba(139,105,20,0.12)",
                   }}
                 >
                   <div
                     className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
                     style={{
-                      background: "linear-gradient(135deg, #d4a843, #b8860b)",
-                      color: "#0a0e1a",
+                      background: "linear-gradient(135deg, #8B6914, #6d4c0a)",
+                      color: "#ffffff",
                     }}
                   >
                     {round.roundNumber}
                   </div>
                   <span
                     className="font-semibold uppercase tracking-widest text-xs"
-                    style={{ color: "#d4a843" }}
+                    style={{ color: "#8B6914" }}
                   >
                     Chặng {round.roundNumber}
                   </span>
@@ -117,18 +117,18 @@ export function ViewerMatchup({ state }: { state: GameState }) {
                   <div
                     className="flex-1 p-6 text-center"
                     style={{
-                      borderRight: "1px solid rgba(212,168,67,0.1)",
+                      borderRight: "1px solid rgba(139,105,20,0.1)",
                     }}
                   >
                     <p
                       className="text-xs font-semibold uppercase tracking-widest mb-2"
-                      style={{ color: "#8a9ab8" }}
+                      style={{ color: "#6b5e4f" }}
                     >
                       Hỏi · 2 phút
                     </p>
                     <p
                       className="font-bold leading-tight mb-2"
-                      style={{ color: "#f0e8d0", fontSize: "clamp(1.4rem, 4vw, 2rem)" }}
+                      style={{ color: "#1a1207", fontSize: "clamp(1.4rem, 4vw, 2rem)" }}
                     >
                       {state.teams[round.askerIdx]}
                     </p>
@@ -150,7 +150,7 @@ export function ViewerMatchup({ state }: { state: GameState }) {
                     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
                       <path
                         d="M4 16 L24 16 M18 10 L24 16 L18 22"
-                        stroke="#d4a843"
+                        stroke="#8B6914"
                         strokeWidth="2.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -163,13 +163,13 @@ export function ViewerMatchup({ state }: { state: GameState }) {
                   <div className="flex-1 p-6 text-center">
                     <p
                       className="text-xs font-semibold uppercase tracking-widest mb-2"
-                      style={{ color: "#8a9ab8" }}
+                      style={{ color: "#6b5e4f" }}
                     >
                       Phản hồi · 3 phút
                     </p>
                     <p
                       className="font-bold leading-tight mb-2"
-                      style={{ color: "#f0e8d0", fontSize: "clamp(1.4rem, 4vw, 2rem)" }}
+                      style={{ color: "#1a1207", fontSize: "clamp(1.4rem, 4vw, 2rem)" }}
                     >
                       {state.teams[round.responderIdx]}
                     </p>
@@ -198,11 +198,11 @@ export function ViewerMatchup({ state }: { state: GameState }) {
               <div
                 key={i}
                 className="w-2 h-2 rounded-full animate-gold-pulse"
-                style={{ background: "#d4a843", animationDelay: `${i * 0.3}s` }}
+                style={{ background: "#8B6914", animationDelay: `${i * 0.3}s` }}
               />
             ))}
           </div>
-          <p style={{ color: "#8a9ab8", fontSize: "1rem" }} className="font-medium">
+          <p style={{ color: "#6b5e4f", fontSize: "1rem" }} className="font-medium">
             Đang chờ MC bắt đầu chặng 1...
           </p>
         </div>

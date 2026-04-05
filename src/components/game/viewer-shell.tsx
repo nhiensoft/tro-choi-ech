@@ -20,9 +20,9 @@ export function ViewerShell() {
         <div className="relative z-10 flex items-center gap-3">
           <div
             className="w-2.5 h-2.5 rounded-full animate-gold-pulse"
-            style={{ background: "#d4a843" }}
+            style={{ background: "#8B6914" }}
           />
-          <p style={{ color: "#8a9ab8", fontSize: "1.1rem" }}>Đang kết nối...</p>
+          <p style={{ color: "#6b5e4f", fontSize: "1.1rem" }}>Đang kết nối...</p>
         </div>
       </div>
     );
@@ -40,9 +40,9 @@ export function ViewerShell() {
             isConnected ? "" : "animate-pulse"
           }`}
           style={{
-            background: isConnected ? "#22c55e" : "#e53535",
+            background: isConnected ? "#16a34a" : "#e53535",
             boxShadow: isConnected
-              ? "0 0 6px rgba(34,197,94,0.6)"
+              ? "0 0 6px rgba(22,163,74,0.5)"
               : "0 0 6px rgba(229,53,53,0.6)",
           }}
         />

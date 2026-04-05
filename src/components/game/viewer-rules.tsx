@@ -23,11 +23,11 @@ const rules = [
   {
     text: (
       <>
-        <strong style={{ color: "#8b5cf6" }}>Chặng 1:</strong> Gen Z hỏi → Nhà đầu tư phản hồi
+        <strong style={{ color: "#7c3aed" }}>Chặng 1:</strong> Gen Z hỏi → Nhà đầu tư phản hồi
         <br />
-        <strong style={{ color: "#d4a843" }}>Chặng 2:</strong> Nhà đầu tư hỏi → Khách du lịch phản hồi
+        <strong style={{ color: "#8B6914" }}>Chặng 2:</strong> Nhà đầu tư hỏi → Khách du lịch phản hồi
         <br />
-        <strong style={{ color: "#06b6d4" }}>Chặng 3:</strong> Khách du lịch hỏi → Gen Z phản hồi
+        <strong style={{ color: "#0891b2" }}>Chặng 3:</strong> Khách du lịch hỏi → Gen Z phản hồi
       </>
     ),
   },
@@ -51,7 +51,7 @@ export function ViewerRules() {
         <div className="text-center space-y-3">
           <p
             className="font-semibold uppercase tracking-[0.25em]"
-            style={{ color: "#8a9ab8", fontSize: "0.85rem" }}
+            style={{ color: "#6b5e4f", fontSize: "0.85rem" }}
           >
             Vùng Đất Kinh Đô
           </p>
@@ -64,15 +64,15 @@ export function ViewerRules() {
           <div className="flex items-center justify-center gap-2">
             <div
               className="h-px w-16"
-              style={{ background: "linear-gradient(to right, transparent, rgba(212,168,67,0.6))" }}
+              style={{ background: "linear-gradient(to right, transparent, rgba(139,105,20,0.55))" }}
             />
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-              <circle cx="5" cy="5" r="4" fill="#d4a843" opacity="0.7" />
-              <circle cx="5" cy="5" r="2" fill="#0a0e1a" />
+              <circle cx="5" cy="5" r="4" fill="#8B6914" opacity="0.7" />
+              <circle cx="5" cy="5" r="2" fill="#faf7f0" />
             </svg>
             <div
               className="h-px w-16"
-              style={{ background: "linear-gradient(to left, transparent, rgba(212,168,67,0.6))" }}
+              style={{ background: "linear-gradient(to left, transparent, rgba(139,105,20,0.55))" }}
             />
           </div>
         </div>
@@ -84,9 +84,9 @@ export function ViewerRules() {
               key={i}
               className="flex items-start gap-5 p-6 rounded-2xl animate-float-up"
               style={{
-                background: "linear-gradient(135deg, rgba(19,24,41,0.9) 0%, rgba(26,32,53,0.9) 100%)",
-                border: "1px solid rgba(212,168,67,0.2)",
-                boxShadow: "0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(212,168,67,0.1)",
+                background: "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(250,247,240,0.95) 100%)",
+                border: "1px solid rgba(139,105,20,0.18)",
+                boxShadow: "0 4px 24px rgba(139,105,20,0.08), inset 0 1px 0 rgba(255,255,255,0.9)",
                 animationDelay: `${i * 0.12}s`,
                 animationFillMode: "both",
               }}
@@ -95,17 +95,17 @@ export function ViewerRules() {
               <div
                 className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg"
                 style={{
-                  background: "linear-gradient(135deg, rgba(212,168,67,0.25) 0%, rgba(212,168,67,0.1) 100%)",
-                  border: "2px solid rgba(212,168,67,0.5)",
-                  color: "#d4a843",
-                  boxShadow: "0 0 12px rgba(212,168,67,0.2)",
+                  background: "linear-gradient(135deg, rgba(139,105,20,0.15) 0%, rgba(139,105,20,0.08) 100%)",
+                  border: "2px solid rgba(139,105,20,0.45)",
+                  color: "#8B6914",
+                  boxShadow: "0 0 12px rgba(139,105,20,0.12)",
                 }}
               >
                 {i + 1}
               </div>
               <p
                 className="leading-relaxed pt-1.5"
-                style={{ color: "#c8bfa8", fontSize: "clamp(0.95rem, 2.5vw, 1.15rem)" }}
+                style={{ color: "#1a1207", fontSize: "clamp(0.95rem, 2.5vw, 1.15rem)" }}
               >
                 {rule.text}
               </p>
@@ -120,11 +120,11 @@ export function ViewerRules() {
               <div
                 key={i}
                 className="w-2 h-2 rounded-full animate-gold-pulse"
-                style={{ background: "#d4a843", animationDelay: `${i * 0.3}s` }}
+                style={{ background: "#8B6914", animationDelay: `${i * 0.3}s` }}
               />
             ))}
           </div>
-          <p style={{ color: "#8a9ab8", fontSize: "1rem" }} className="font-medium">
+          <p style={{ color: "#6b5e4f", fontSize: "1rem" }} className="font-medium">
             Đang chờ MC tiếp tục...
           </p>
         </div>

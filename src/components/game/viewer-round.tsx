@@ -6,25 +6,25 @@ import { DecorativeBg } from "./decorative-bg";
 
 const ROLE_STYLE: Record<Role, { text: string; border: string; bg: string; glow: string; cardBorder: string }> = {
   "Gen Z": {
-    text: "#8b5cf6",
-    border: "rgba(139,92,246,0.5)",
-    bg: "rgba(139,92,246,0.1)",
-    glow: "rgba(139,92,246,0.3)",
-    cardBorder: "rgba(139,92,246,0.35)",
+    text: "#7c3aed",
+    border: "rgba(124,58,237,0.45)",
+    bg: "rgba(124,58,237,0.08)",
+    glow: "rgba(124,58,237,0.2)",
+    cardBorder: "rgba(124,58,237,0.3)",
   },
   "Nhà đầu tư": {
-    text: "#d4a843",
-    border: "rgba(212,168,67,0.5)",
-    bg: "rgba(212,168,67,0.1)",
-    glow: "rgba(212,168,67,0.3)",
-    cardBorder: "rgba(212,168,67,0.35)",
+    text: "#8B6914",
+    border: "rgba(139,105,20,0.45)",
+    bg: "rgba(139,105,20,0.08)",
+    glow: "rgba(139,105,20,0.2)",
+    cardBorder: "rgba(139,105,20,0.3)",
   },
   "Khách du lịch": {
-    text: "#06b6d4",
-    border: "rgba(6,182,212,0.5)",
-    bg: "rgba(6,182,212,0.1)",
-    glow: "rgba(6,182,212,0.3)",
-    cardBorder: "rgba(6,182,212,0.35)",
+    text: "#0891b2",
+    border: "rgba(8,145,178,0.45)",
+    bg: "rgba(8,145,178,0.08)",
+    glow: "rgba(8,145,178,0.2)",
+    cardBorder: "rgba(8,145,178,0.3)",
   },
 };
 
@@ -68,22 +68,22 @@ export function ViewerRound({ state }: { state: GameState }) {
                 key={n}
                 className="w-2.5 h-2.5 rounded-full transition-all duration-300"
                 style={{
-                  background: n === round ? "#d4a843" : "rgba(212,168,67,0.2)",
-                  boxShadow: n === round ? "0 0 10px rgba(212,168,67,0.8)" : "none",
+                  background: n === round ? "#8B6914" : "rgba(139,105,20,0.2)",
+                  boxShadow: n === round ? "0 0 10px rgba(139,105,20,0.5)" : "none",
                 }}
               />
             ))}
           </div>
           <p
             className="font-semibold uppercase tracking-[0.3em]"
-            style={{ color: "#8a9ab8", fontSize: "0.8rem" }}
+            style={{ color: "#6b5e4f", fontSize: "0.8rem" }}
           >
             Chặng {round} / 3
           </p>
           <h2
             className="font-bold"
             style={{
-              color: isAsk ? "#d4a843" : "#06b6d4",
+              color: isAsk ? "#8B6914" : "#0891b2",
               fontSize: "clamp(1.6rem, 4.5vw, 2.4rem)",
             }}
           >
@@ -95,9 +95,9 @@ export function ViewerRound({ state }: { state: GameState }) {
         <div
           className="w-full rounded-3xl p-8 animate-glow-gold"
           style={{
-            background: "linear-gradient(135deg, rgba(19,24,41,0.98) 0%, rgba(26,32,53,0.98) 100%)",
+            background: "linear-gradient(135deg, rgba(255,255,255,0.99) 0%, rgba(250,247,240,0.99) 100%)",
             border: `2px solid ${activeStyle.cardBorder}`,
-            boxShadow: `0 0 40px ${activeStyle.glow}, 0 16px 48px rgba(0,0,0,0.6)`,
+            boxShadow: `0 0 40px ${activeStyle.glow}, 0 16px 48px rgba(139,105,20,0.1)`,
           }}
         >
           {/* Role badge */}
@@ -118,7 +118,7 @@ export function ViewerRound({ state }: { state: GameState }) {
           {/* Team label */}
           <p
             className="text-center font-semibold uppercase tracking-widest mb-1"
-            style={{ color: "#8a9ab8", fontSize: "0.8rem" }}
+            style={{ color: "#6b5e4f", fontSize: "0.8rem" }}
           >
             {isAsk ? "Đội hỏi" : "Đội phản hồi"}
           </p>
@@ -126,7 +126,7 @@ export function ViewerRound({ state }: { state: GameState }) {
           {/* Team name — BIG */}
           <p
             className="text-center font-bold leading-none mb-6"
-            style={{ color: "#f0e8d0", fontSize: "clamp(2.5rem, 8vw, 4.5rem)" }}
+            style={{ color: "#1a1207", fontSize: "clamp(2.5rem, 8vw, 4.5rem)" }}
           >
             {activeTeamName}
           </p>
@@ -143,17 +143,17 @@ export function ViewerRound({ state }: { state: GameState }) {
         <div
           className="w-full rounded-2xl px-6 py-4 flex items-center justify-between"
           style={{
-            background: "rgba(26,32,53,0.6)",
-            border: "1px solid rgba(212,168,67,0.12)",
+            background: "rgba(250,247,240,0.8)",
+            border: "1px solid rgba(139,105,20,0.12)",
           }}
         >
-          <p style={{ color: "#8a9ab8", fontSize: "0.9rem" }}>
+          <p style={{ color: "#6b5e4f", fontSize: "0.9rem" }}>
             {isAsk ? "Hỏi về website của" : "Phản hồi cho"}
           </p>
           <div className="flex items-center gap-3">
             <p
               className="font-bold"
-              style={{ color: "#f0e8d0", fontSize: "clamp(1.1rem, 3vw, 1.5rem)" }}
+              style={{ color: "#1a1207", fontSize: "clamp(1.1rem, 3vw, 1.5rem)" }}
             >
               {otherTeamName}
             </p>
@@ -174,9 +174,9 @@ export function ViewerRound({ state }: { state: GameState }) {
         <div className="flex items-center gap-2">
           <div
             className="w-1.5 h-1.5 rounded-full animate-gold-pulse"
-            style={{ background: "#d4a843" }}
+            style={{ background: "#8B6914" }}
           />
-          <p style={{ color: "rgba(138,154,184,0.6)", fontSize: "0.85rem" }}>
+          <p style={{ color: "rgba(107,94,79,0.7)", fontSize: "0.85rem" }}>
             Ban giám khảo đang chấm điểm...
           </p>
         </div>
@@ -198,15 +198,15 @@ function TimerDisplay({
   const defaultDuration = isAsk ? "02:00" : "03:00";
 
   const timerColor = isFinished
-    ? "#e53535"
+    ? "#c41e3a"
     : isRunning
-    ? "#d4a843"
-    : "#4a5568";
+    ? "#8B6914"
+    : "#9e8e7a";
 
   const timerGlow = isFinished
-    ? "0 0 40px rgba(229,53,53,0.7), 0 0 80px rgba(229,53,53,0.3)"
+    ? "0 0 40px rgba(196,30,58,0.5), 0 0 80px rgba(196,30,58,0.2)"
     : isRunning
-    ? "0 0 40px rgba(212,168,67,0.6), 0 0 80px rgba(212,168,67,0.2)"
+    ? "0 0 40px rgba(139,105,20,0.4), 0 0 80px rgba(139,105,20,0.15)"
     : "none";
 
   return (
@@ -230,18 +230,18 @@ function TimerDisplay({
         {isFinished ? (
           <p
             className="font-bold uppercase tracking-widest animate-timer-urgent"
-            style={{ color: "#e53535", fontSize: "1.1rem" }}
+            style={{ color: "#c41e3a", fontSize: "1.1rem" }}
           >
             Hết giờ!
           </p>
         ) : !startedAt ? (
-          <p style={{ color: "rgba(138,154,184,0.5)", fontSize: "0.85rem" }}>
+          <p style={{ color: "rgba(107,94,79,0.6)", fontSize: "0.85rem" }}>
             Chờ MC bắt đầu đếm...
           </p>
         ) : (
           <p
             className="font-semibold uppercase tracking-widest"
-            style={{ color: "rgba(212,168,67,0.5)", fontSize: "0.75rem" }}
+            style={{ color: "rgba(139,105,20,0.6)", fontSize: "0.75rem" }}
           >
             {isAsk ? "Thời gian hỏi" : "Thời gian phản hồi"}
           </p>
