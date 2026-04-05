@@ -2,8 +2,6 @@ import { cookies } from "next/headers";
 import { verifyAdminSession } from "@/lib/auth";
 import { kv } from "@vercel/kv";
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-
 export async function POST(request: Request) {
   const cookieStore = await cookies();
   const session = cookieStore.get("admin-session")?.value;
@@ -29,11 +27,6 @@ export async function POST(request: Request) {
   // Validate file type
   if (!file.type.startsWith("image/")) {
     return Response.json({ error: "Chỉ chấp nhận file ảnh" }, { status: 400 });
-  }
-
-  // Validate file size
-  if (file.size > MAX_FILE_SIZE) {
-    return Response.json({ error: "File quá lớn (tối đa 5MB)" }, { status: 400 });
   }
 
   const bytes = await file.arrayBuffer();

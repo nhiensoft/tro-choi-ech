@@ -56,7 +56,7 @@ function InputControls({ dispatch }: { dispatch: Dispatch }) {
     }
   };
 
-  const handleStart = () => {
+  const handleStart = async () => {
     const trimmed = names.map((n) => n.trim());
     if (trimmed.some((n) => n === "")) {
       setNameError("Nhập đủ 3 tên đội");
@@ -66,11 +66,14 @@ function InputControls({ dispatch }: { dispatch: Dispatch }) {
       setNameError("Tên đội phải khác nhau");
       return;
     }
-    // pickOrder and remainingRoles are omitted — server-game-store re-computes them via shuffle
-    dispatch({
-      type: "SET_TEAMS",
-      teams: trimmed as [string, string, string],
-    });
+    try {
+      await dispatch({
+        type: "SET_TEAMS",
+        teams: trimmed as [string, string, string],
+      });
+    } catch (err) {
+      setNameError(err instanceof Error ? err.message : "Lỗi khi bắt đầu");
+    }
   };
 
   const displayError = nameError || uploadError;
