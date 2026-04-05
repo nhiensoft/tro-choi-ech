@@ -40,6 +40,9 @@ pnpm-debug.log*
 .env*
 !.env.example
 
+# game state persistence
+data/game-state.json
+
 # vercel
 .vercel
 
