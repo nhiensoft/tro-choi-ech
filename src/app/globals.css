@@ -79,98 +79,98 @@
 }
 
 /* ============================================
-   DARK IMPERIAL THEME (default)
+   LIGHT IMPERIAL THEME (default)
    Vùng Đất Kinh Đô — Huế Game Show
    ============================================ */
 :root {
   /* --- Imperial palette --- */
-  --gold:            #d4a843;
-  --gold-light:      #f0cb6a;
-  --gold-dim:        #8a6a20;
+  --gold:            #8B6914;
+  --gold-light:      #a67c1a;
+  --gold-dim:        #6d4c0a;
   --crimson:         #c41e3a;
-  --imperial-bg:     #0a0e1a;
-  --imperial-card:   #131829;
-  --imperial-card-2: #1a2035;
+  --imperial-bg:     #faf7f0;
+  --imperial-card:   #ffffff;
+  --imperial-card-2: #f0ebe0;
 
   /* --- Base --- */
-  --background: #0a0e1a;
-  --foreground: #f0e8d0;        /* warm cream */
+  --background: #faf7f0;
+  --foreground: #1a1207;        /* dark brown */
 
   /* --- Card --- */
-  --card: #131829;
-  --card-foreground: #f0e8d0;
+  --card: #ffffff;
+  --card-foreground: #1a1207;
 
   /* --- Popover --- */
-  --popover: #131829;
-  --popover-foreground: #f0e8d0;
+  --popover: #ffffff;
+  --popover-foreground: #1a1207;
 
-  /* --- Primary: Imperial Gold --- */
-  --primary: #d4a843;
-  --primary-foreground: #0a0e1a;
+  /* --- Primary: Deep Imperial Gold --- */
+  --primary: #8B6914;
+  --primary-foreground: #ffffff;
 
-  /* --- Secondary: Crimson --- */
-  --secondary: #2a1020;
-  --secondary-foreground: #f0e8d0;
+  /* --- Secondary --- */
+  --secondary: #f0ebe0;
+  --secondary-foreground: #1a1207;
 
   /* --- Muted --- */
-  --muted: #1a2035;
-  --muted-foreground: #8a9ab8;
+  --muted: #f0ebe0;
+  --muted-foreground: #6b5e4f;
 
   /* --- Accent: Crimson Red --- */
   --accent: #c41e3a;
-  --accent-foreground: #f0e8d0;
+  --accent-foreground: #ffffff;
 
   /* --- Destructive --- */
   --destructive: #e53535;
 
   /* --- Border / Input / Ring --- */
-  --border: rgba(212, 168, 67, 0.2);
-  --input: rgba(212, 168, 67, 0.15);
-  --ring: #d4a843;
+  --border: rgba(139, 105, 20, 0.2);
+  --input: rgba(139, 105, 20, 0.15);
+  --ring: #8B6914;
 
   /* --- Chart colors --- */
-  --chart-1: #d4a843;
-  --chart-2: #8b5cf6;
-  --chart-3: #06b6d4;
+  --chart-1: #8B6914;
+  --chart-2: #7c3aed;
+  --chart-3: #0891b2;
   --chart-4: #c41e3a;
-  --chart-5: #22c55e;
+  --chart-5: #16a34a;
 
   /* --- Radius (elegant = moderate) --- */
   --radius: 0.75rem;
 
-  /* --- Sidebar (admin - slightly lighter dark) --- */
-  --sidebar: #0f1526;
-  --sidebar-foreground: #f0e8d0;
-  --sidebar-primary: #d4a843;
-  --sidebar-primary-foreground: #0a0e1a;
-  --sidebar-accent: #1a2035;
-  --sidebar-accent-foreground: #d4a843;
-  --sidebar-border: rgba(212, 168, 67, 0.15);
-  --sidebar-ring: #d4a843;
+  /* --- Sidebar (admin - warm light) --- */
+  --sidebar: #f5f0e8;
+  --sidebar-foreground: #1a1207;
+  --sidebar-primary: #8B6914;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f0ebe0;
+  --sidebar-accent-foreground: #8B6914;
+  --sidebar-border: rgba(139, 105, 20, 0.15);
+  --sidebar-ring: #8B6914;
 
   /* =============================
      ROLE COLORS — Game specific
      ============================= */
 
-  /* Gen Z — Vivid Violet (neon purple on dark) */
-  --role-genz: #8b5cf6;
-  --role-genz-light: rgba(139, 92, 246, 0.15);
+  /* Gen Z — Vivid Violet */
+  --role-genz: #7c3aed;
+  --role-genz-light: rgba(124, 58, 237, 0.12);
   --role-genz-foreground: #ffffff;
 
-  /* Nha dau tu — Imperial Gold */
-  --role-investor: #d4a843;
-  --role-investor-light: rgba(212, 168, 67, 0.15);
-  --role-investor-foreground: #0a0e1a;
+  /* Nha dau tu — Deep Imperial Gold */
+  --role-investor: #8B6914;
+  --role-investor-light: rgba(139, 105, 20, 0.12);
+  --role-investor-foreground: #ffffff;
 
   /* Khach du lich — Teal / Cyan */
-  --role-tourist: #06b6d4;
-  --role-tourist-light: rgba(6, 182, 212, 0.15);
-  --role-tourist-foreground: #0a0e1a;
+  --role-tourist: #0891b2;
+  --role-tourist-light: rgba(8, 145, 178, 0.12);
+  --role-tourist-foreground: #ffffff;
 
   /* Game Accent (CTA) */
-  --game-accent: #d4a843;
-  --game-accent-foreground: #0a0e1a;
-  --game-success: #22c55e;
+  --game-accent: #8B6914;
+  --game-accent-foreground: #ffffff;
+  --game-success: #16a34a;
 }
 
 /* ============================================
@@ -182,7 +182,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-color: #0a0e1a;
+    background-color: #faf7f0;
   }
   html {
     @apply font-sans;
@@ -223,8 +223,8 @@
 }
 
 @keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(212, 168, 67, 0.3), 0 0 40px rgba(212, 168, 67, 0.1); }
-  50%       { box-shadow: 0 0 40px rgba(212, 168, 67, 0.6), 0 0 80px rgba(212, 168, 67, 0.25); }
+  0%, 100% { box-shadow: 0 0 20px rgba(139, 105, 20, 0.25), 0 0 40px rgba(139, 105, 20, 0.08); }
+  50%       { box-shadow: 0 0 40px rgba(139, 105, 20, 0.45), 0 0 80px rgba(139, 105, 20, 0.18); }
 }
 
 @keyframes glow-pulse-red {
@@ -258,8 +258,8 @@
 }
 
 @keyframes ornament-glow {
-  0%, 100% { filter: drop-shadow(0 0 4px rgba(212, 168, 67, 0.4)); }
-  50%       { filter: drop-shadow(0 0 12px rgba(212, 168, 67, 0.9)); }
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(139, 105, 20, 0.5)); }
+  50%       { filter: drop-shadow(0 0 12px rgba(139, 105, 20, 0.9)); }
 }
 
 /* ============================================
@@ -279,7 +279,7 @@
 
 /* Gold text gradient */
 .text-gold-gradient {
-  background: linear-gradient(135deg, #f0cb6a 0%, #d4a843 40%, #b8860b 70%, #d4a843 100%);
+  background: linear-gradient(135deg, #8B6914 0%, #6d4c0a 40%, #a67c1a 70%, #8B6914 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -289,15 +289,15 @@
 
 /* Gold border glow */
 .border-gold-glow {
-  border-color: rgba(212, 168, 67, 0.6);
-  box-shadow: 0 0 16px rgba(212, 168, 67, 0.25), inset 0 0 16px rgba(212, 168, 67, 0.05);
+  border-color: rgba(139, 105, 20, 0.5);
+  box-shadow: 0 0 16px rgba(139, 105, 20, 0.15), inset 0 0 16px rgba(139, 105, 20, 0.04);
 }
 
 /* Card imperial */
 .card-imperial {
-  background: linear-gradient(135deg, #131829 0%, #1a2035 100%);
-  border: 1px solid rgba(212, 168, 67, 0.25);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 168, 67, 0.1);
+  background: linear-gradient(135deg, #ffffff 0%, #faf7f0 100%);
+  border: 1px solid rgba(139, 105, 20, 0.2);
+  box-shadow: 0 8px 32px rgba(139, 105, 20, 0.1), 0 0 0 1px rgba(139, 105, 20, 0.08);
 }
 
 /* Waiting dot pulse */

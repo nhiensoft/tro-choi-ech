@@ -6,28 +6,28 @@ export function DecorativeBg() {
       className="fixed inset-0 z-0 overflow-hidden pointer-events-none"
       aria-hidden="true"
     >
-      {/* Deep dark background gradient */}
+      {/* Warm cream background gradient */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 50% -10%, rgba(212,168,67,0.08) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(139,92,246,0.05) 0%, transparent 50%), radial-gradient(ellipse 50% 40% at 10% 70%, rgba(196,30,58,0.05) 0%, transparent 50%), #0a0e1a",
+            "radial-gradient(ellipse 80% 60% at 50% -10%, rgba(139,105,20,0.07) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(124,58,237,0.04) 0%, transparent 50%), radial-gradient(ellipse 50% 40% at 10% 70%, rgba(196,30,58,0.04) 0%, transparent 50%), #faf7f0",
         }}
       />
 
-      {/* Subtle animated gradient sweep across top */}
+      {/* Subtle top edge line */}
       <div
         className="absolute inset-x-0 top-0 h-px"
         style={{
           background:
-            "linear-gradient(90deg, transparent 0%, rgba(212,168,67,0.6) 30%, rgba(212,168,67,1) 50%, rgba(212,168,67,0.6) 70%, transparent 100%)",
+            "linear-gradient(90deg, transparent 0%, rgba(139,105,20,0.5) 30%, rgba(139,105,20,0.9) 50%, rgba(139,105,20,0.5) 70%, transparent 100%)",
         }}
       />
       <div
         className="absolute inset-x-0 bottom-0 h-px"
         style={{
           background:
-            "linear-gradient(90deg, transparent 0%, rgba(212,168,67,0.3) 30%, rgba(212,168,67,0.6) 50%, rgba(212,168,67,0.3) 70%, transparent 100%)",
+            "linear-gradient(90deg, transparent 0%, rgba(139,105,20,0.25) 30%, rgba(139,105,20,0.5) 50%, rgba(139,105,20,0.25) 70%, transparent 100%)",
         }}
       />
 
@@ -40,27 +40,27 @@ export function DecorativeBg() {
       >
         <path
           d="M0 0 L80 0 L80 10 L10 10 L10 80 L0 80 Z"
-          fill="rgba(212,168,67,0.15)"
+          fill="rgba(139,105,20,0.18)"
         />
         <path
           d="M0 0 L50 0 L50 4 L4 4 L4 50 L0 50 Z"
-          fill="rgba(212,168,67,0.3)"
+          fill="rgba(139,105,20,0.35)"
         />
         {/* Corner lotus bud */}
         <g transform="translate(28, 28)">
-          <ellipse cx="0" cy="0" rx="4" ry="8" fill="rgba(212,168,67,0.5)" transform="rotate(-45)" />
-          <ellipse cx="0" cy="0" rx="4" ry="8" fill="rgba(212,168,67,0.5)" transform="rotate(45)" />
-          <ellipse cx="0" cy="0" rx="3" ry="6" fill="rgba(212,168,67,0.7)" transform="rotate(0)" />
-          <circle cx="0" cy="0" r="3" fill="rgba(212,168,67,0.9)" />
+          <ellipse cx="0" cy="0" rx="4" ry="8" fill="rgba(139,105,20,0.55)" transform="rotate(-45)" />
+          <ellipse cx="0" cy="0" rx="4" ry="8" fill="rgba(139,105,20,0.55)" transform="rotate(45)" />
+          <ellipse cx="0" cy="0" rx="3" ry="6" fill="rgba(139,105,20,0.75)" transform="rotate(0)" />
+          <circle cx="0" cy="0" r="3" fill="rgba(139,105,20,0.9)" />
         </g>
         {/* Decorative dots along top border */}
-        <circle cx="100" cy="5" r="2" fill="rgba(212,168,67,0.4)" />
-        <circle cx="130" cy="5" r="1.5" fill="rgba(212,168,67,0.25)" />
-        <circle cx="70" cy="5" r="1.5" fill="rgba(212,168,67,0.25)" />
+        <circle cx="100" cy="5" r="2" fill="rgba(139,105,20,0.45)" />
+        <circle cx="130" cy="5" r="1.5" fill="rgba(139,105,20,0.3)" />
+        <circle cx="70" cy="5" r="1.5" fill="rgba(139,105,20,0.3)" />
         {/* Decorative dots along left border */}
-        <circle cx="5" cy="100" r="2" fill="rgba(212,168,67,0.4)" />
-        <circle cx="5" cy="130" r="1.5" fill="rgba(212,168,67,0.25)" />
-        <circle cx="5" cy="70" r="1.5" fill="rgba(212,168,67,0.25)" />
+        <circle cx="5" cy="100" r="2" fill="rgba(139,105,20,0.45)" />
+        <circle cx="5" cy="130" r="1.5" fill="rgba(139,105,20,0.3)" />
+        <circle cx="5" cy="70" r="1.5" fill="rgba(139,105,20,0.3)" />
       </svg>
 
       {/* Imperial pattern — top-right corner ornament */}
@@ -73,24 +73,24 @@ export function DecorativeBg() {
       >
         <path
           d="M200 0 L120 0 L120 10 L190 10 L190 80 L200 80 Z"
-          fill="rgba(212,168,67,0.15)"
+          fill="rgba(139,105,20,0.18)"
         />
         <path
           d="M200 0 L150 0 L150 4 L196 4 L196 50 L200 50 Z"
-          fill="rgba(212,168,67,0.3)"
+          fill="rgba(139,105,20,0.35)"
         />
         <g transform="translate(172, 28)">
-          <ellipse cx="0" cy="0" rx="4" ry="8" fill="rgba(212,168,67,0.5)" transform="rotate(-45)" />
-          <ellipse cx="0" cy="0" rx="4" ry="8" fill="rgba(212,168,67,0.5)" transform="rotate(45)" />
-          <ellipse cx="0" cy="0" rx="3" ry="6" fill="rgba(212,168,67,0.7)" />
-          <circle cx="0" cy="0" r="3" fill="rgba(212,168,67,0.9)" />
+          <ellipse cx="0" cy="0" rx="4" ry="8" fill="rgba(139,105,20,0.55)" transform="rotate(-45)" />
+          <ellipse cx="0" cy="0" rx="4" ry="8" fill="rgba(139,105,20,0.55)" transform="rotate(45)" />
+          <ellipse cx="0" cy="0" rx="3" ry="6" fill="rgba(139,105,20,0.75)" />
+          <circle cx="0" cy="0" r="3" fill="rgba(139,105,20,0.9)" />
         </g>
-        <circle cx="100" cy="5" r="2" fill="rgba(212,168,67,0.4)" />
-        <circle cx="70" cy="5" r="1.5" fill="rgba(212,168,67,0.25)" />
-        <circle cx="130" cy="5" r="1.5" fill="rgba(212,168,67,0.25)" />
-        <circle cx="195" cy="100" r="2" fill="rgba(212,168,67,0.4)" />
-        <circle cx="195" cy="130" r="1.5" fill="rgba(212,168,67,0.25)" />
-        <circle cx="195" cy="70" r="1.5" fill="rgba(212,168,67,0.25)" />
+        <circle cx="100" cy="5" r="2" fill="rgba(139,105,20,0.45)" />
+        <circle cx="70" cy="5" r="1.5" fill="rgba(139,105,20,0.3)" />
+        <circle cx="130" cy="5" r="1.5" fill="rgba(139,105,20,0.3)" />
+        <circle cx="195" cy="100" r="2" fill="rgba(139,105,20,0.45)" />
+        <circle cx="195" cy="130" r="1.5" fill="rgba(139,105,20,0.3)" />
+        <circle cx="195" cy="70" r="1.5" fill="rgba(139,105,20,0.3)" />
       </svg>
 
       {/* Imperial pattern — bottom-left corner ornament */}
@@ -103,21 +103,21 @@ export function DecorativeBg() {
       >
         <path
           d="M0 200 L80 200 L80 190 L10 190 L10 120 L0 120 Z"
-          fill="rgba(212,168,67,0.15)"
+          fill="rgba(139,105,20,0.18)"
         />
         <path
           d="M0 200 L50 200 L50 196 L4 196 L4 150 L0 150 Z"
-          fill="rgba(212,168,67,0.3)"
+          fill="rgba(139,105,20,0.35)"
         />
         <g transform="translate(28, 172)">
-          <ellipse cx="0" cy="0" rx="4" ry="8" fill="rgba(212,168,67,0.5)" transform="rotate(-45)" />
-          <ellipse cx="0" cy="0" rx="4" ry="8" fill="rgba(212,168,67,0.5)" transform="rotate(45)" />
-          <ellipse cx="0" cy="0" rx="3" ry="6" fill="rgba(212,168,67,0.7)" />
-          <circle cx="0" cy="0" r="3" fill="rgba(212,168,67,0.9)" />
+          <ellipse cx="0" cy="0" rx="4" ry="8" fill="rgba(139,105,20,0.55)" transform="rotate(-45)" />
+          <ellipse cx="0" cy="0" rx="4" ry="8" fill="rgba(139,105,20,0.55)" transform="rotate(45)" />
+          <ellipse cx="0" cy="0" rx="3" ry="6" fill="rgba(139,105,20,0.75)" />
+          <circle cx="0" cy="0" r="3" fill="rgba(139,105,20,0.9)" />
         </g>
-        <circle cx="5" cy="100" r="2" fill="rgba(212,168,67,0.4)" />
-        <circle cx="5" cy="70" r="1.5" fill="rgba(212,168,67,0.25)" />
-        <circle cx="5" cy="130" r="1.5" fill="rgba(212,168,67,0.25)" />
+        <circle cx="5" cy="100" r="2" fill="rgba(139,105,20,0.45)" />
+        <circle cx="5" cy="70" r="1.5" fill="rgba(139,105,20,0.3)" />
+        <circle cx="5" cy="130" r="1.5" fill="rgba(139,105,20,0.3)" />
       </svg>
 
       {/* Imperial pattern — bottom-right corner ornament */}
@@ -130,21 +130,21 @@ export function DecorativeBg() {
       >
         <path
           d="M200 200 L120 200 L120 190 L190 190 L190 120 L200 120 Z"
-          fill="rgba(212,168,67,0.15)"
+          fill="rgba(139,105,20,0.18)"
         />
         <path
           d="M200 200 L150 200 L150 196 L196 196 L196 150 L200 150 Z"
-          fill="rgba(212,168,67,0.3)"
+          fill="rgba(139,105,20,0.35)"
         />
         <g transform="translate(172, 172)">
-          <ellipse cx="0" cy="0" rx="4" ry="8" fill="rgba(212,168,67,0.5)" transform="rotate(-45)" />
-          <ellipse cx="0" cy="0" rx="4" ry="8" fill="rgba(212,168,67,0.5)" transform="rotate(45)" />
-          <ellipse cx="0" cy="0" rx="3" ry="6" fill="rgba(212,168,67,0.7)" />
-          <circle cx="0" cy="0" r="3" fill="rgba(212,168,67,0.9)" />
+          <ellipse cx="0" cy="0" rx="4" ry="8" fill="rgba(139,105,20,0.55)" transform="rotate(-45)" />
+          <ellipse cx="0" cy="0" rx="4" ry="8" fill="rgba(139,105,20,0.55)" transform="rotate(45)" />
+          <ellipse cx="0" cy="0" rx="3" ry="6" fill="rgba(139,105,20,0.75)" />
+          <circle cx="0" cy="0" r="3" fill="rgba(139,105,20,0.9)" />
         </g>
-        <circle cx="195" cy="100" r="2" fill="rgba(212,168,67,0.4)" />
-        <circle cx="195" cy="70" r="1.5" fill="rgba(212,168,67,0.25)" />
-        <circle cx="195" cy="130" r="1.5" fill="rgba(212,168,67,0.25)" />
+        <circle cx="195" cy="100" r="2" fill="rgba(139,105,20,0.45)" />
+        <circle cx="195" cy="70" r="1.5" fill="rgba(139,105,20,0.3)" />
+        <circle cx="195" cy="130" r="1.5" fill="rgba(139,105,20,0.3)" />
       </svg>
 
       {/* Floating lotus petals — scattered across screen */}
@@ -160,12 +160,12 @@ export function DecorativeBg() {
         viewBox="0 0 60 60"
         fill="none"
       >
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#d4a843" transform="rotate(-30 30 30)" />
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#d4a843" transform="rotate(30 30 30)" />
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#f0cb6a" transform="rotate(0 30 30)" />
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#d4a843" transform="rotate(60 30 30)" />
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#d4a843" transform="rotate(-60 30 30)" />
-        <circle cx="30" cy="30" r="5" fill="#f0cb6a" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#8B6914" transform="rotate(-30 30 30)" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#8B6914" transform="rotate(30 30 30)" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#a67c1a" transform="rotate(0 30 30)" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#8B6914" transform="rotate(60 30 30)" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#8B6914" transform="rotate(-60 30 30)" />
+        <circle cx="30" cy="30" r="5" fill="#a67c1a" />
       </svg>
 
       {/* Petal 2 — top right area */}
@@ -181,12 +181,12 @@ export function DecorativeBg() {
         viewBox="0 0 60 60"
         fill="none"
       >
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#d4a843" transform="rotate(-30 30 30)" />
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#d4a843" transform="rotate(30 30 30)" />
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#f0cb6a" transform="rotate(0 30 30)" />
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#d4a843" transform="rotate(60 30 30)" />
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#d4a843" transform="rotate(-60 30 30)" />
-        <circle cx="30" cy="30" r="5" fill="#f0cb6a" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#8B6914" transform="rotate(-30 30 30)" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#8B6914" transform="rotate(30 30 30)" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#a67c1a" transform="rotate(0 30 30)" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#8B6914" transform="rotate(60 30 30)" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#8B6914" transform="rotate(-60 30 30)" />
+        <circle cx="30" cy="30" r="5" fill="#a67c1a" />
       </svg>
 
       {/* Petal 3 — bottom left */}
@@ -207,7 +207,7 @@ export function DecorativeBg() {
         <ellipse cx="30" cy="30" rx="8" ry="22" fill="#e84060" transform="rotate(0 30 30)" />
         <ellipse cx="30" cy="30" rx="8" ry="22" fill="#c41e3a" transform="rotate(60 30 30)" />
         <ellipse cx="30" cy="30" rx="8" ry="22" fill="#c41e3a" transform="rotate(-60 30 30)" />
-        <circle cx="30" cy="30" r="5" fill="#f0cb6a" />
+        <circle cx="30" cy="30" r="5" fill="#a67c1a" />
       </svg>
 
       {/* Petal 4 — bottom right */}
@@ -223,12 +223,12 @@ export function DecorativeBg() {
         viewBox="0 0 60 60"
         fill="none"
       >
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#d4a843" transform="rotate(-30 30 30)" />
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#d4a843" transform="rotate(30 30 30)" />
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#f0cb6a" transform="rotate(0 30 30)" />
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#d4a843" transform="rotate(60 30 30)" />
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#d4a843" transform="rotate(-60 30 30)" />
-        <circle cx="30" cy="30" r="5" fill="#f0cb6a" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#8B6914" transform="rotate(-30 30 30)" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#8B6914" transform="rotate(30 30 30)" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#a67c1a" transform="rotate(0 30 30)" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#8B6914" transform="rotate(60 30 30)" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#8B6914" transform="rotate(-60 30 30)" />
+        <circle cx="30" cy="30" r="5" fill="#a67c1a" />
       </svg>
 
       {/* Petal 5 — mid left */}
@@ -244,15 +244,15 @@ export function DecorativeBg() {
         viewBox="0 0 60 60"
         fill="none"
       >
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#d4a843" transform="rotate(-30 30 30)" />
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#d4a843" transform="rotate(30 30 30)" />
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#f0cb6a" transform="rotate(0 30 30)" />
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#d4a843" transform="rotate(60 30 30)" />
-        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#d4a843" transform="rotate(-60 30 30)" />
-        <circle cx="30" cy="30" r="5" fill="#f0cb6a" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#8B6914" transform="rotate(-30 30 30)" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#8B6914" transform="rotate(30 30 30)" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#a67c1a" transform="rotate(0 30 30)" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#8B6914" transform="rotate(60 30 30)" />
+        <ellipse cx="30" cy="30" rx="8" ry="22" fill="#8B6914" transform="rotate(-60 30 30)" />
+        <circle cx="30" cy="30" r="5" fill="#a67c1a" />
       </svg>
 
-      {/* Floating gold particles */}
+      {/* Floating warm gold particles */}
       {[
         { top: "20%", left: "25%", size: 3, delay: "0s", dur: "3.2s" },
         { top: "35%", left: "75%", size: 2, delay: "0.7s", dur: "4s" },
@@ -275,20 +275,20 @@ export function DecorativeBg() {
             left: p.left,
             width: p.size,
             height: p.size,
-            background: "#d4a843",
+            background: "#8B6914",
             animation: `particle-float ${p.dur} ease-in-out infinite`,
             animationDelay: p.delay,
-            opacity: 0.5,
+            opacity: 0.35,
           }}
         />
       ))}
 
-      {/* Centre subtle radial vignette darkening edges */}
+      {/* Centre subtle warm vignette */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(0,0,0,0.4) 100%)",
+            "radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(200,180,140,0.12) 100%)",
         }}
       />
     </div>
