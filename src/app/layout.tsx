@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Vùng Đất Kinh Đô — Chặng 2",
-  description: "Phản biện Website Du lịch Huế",
+  description: "Cuộc thi tranh biện đội nhóm — Vùng Đất Kinh Đô Chặng 2",
 };
 
 export default function RootLayout({

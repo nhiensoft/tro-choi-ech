@@ -24,11 +24,6 @@ export async function POST(request: Request) {
     return Response.json({ error: "Invalid teamIdx" }, { status: 400 });
   }
 
-  // Validate file type
-  if (!file.type.startsWith("image/")) {
-    return Response.json({ error: "Chỉ chấp nhận file ảnh" }, { status: 400 });
-  }
-
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
   const base64 = buffer.toString("base64");

@@ -54,7 +54,7 @@ export function ViewerWaiting() {
             className="font-medium tracking-wide"
             style={{ color: "#6b5e4f", fontSize: "clamp(1rem, 3vw, 1.35rem)" }}
           >
-            Chặng 2 — Phản biện Website Du lịch
+            Chặng 2
           </p>
         </div>
 
@@ -91,7 +91,7 @@ export function ViewerWaiting() {
           className="italic max-w-md"
           style={{ color: "rgba(107,94,79,0.7)", fontSize: "0.9rem" }}
         >
-          Cuộc thi phản biện website du lịch Huế
+          Cuộc thi tranh biện đội nhóm
         </p>
       </div>
     </div>
