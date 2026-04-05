@@ -62,8 +62,15 @@ export function getRounds(roles: Record<number, Role>): RoundInfo[] {
   });
 }
 
+/** Parse a round step string like "round-1-ask" into { round, phase } */
+export function parseRoundStep(step: GameStep): { round: number; phase: "ask" | "respond" } | null {
+  const match = step.match(/^round-(\d)-(\w+)$/);
+  if (!match) return null;
+  return { round: Number(match[1]), phase: match[2] as "ask" | "respond" };
+}
+
 export type GameAction =
-  | { type: "SET_TEAMS"; teams: [string, string, string]; pickOrder: [number, number, number]; remainingRoles: Role[] }
+  | { type: "SET_TEAMS"; teams: [string, string, string]; pickOrder?: [number, number, number]; remainingRoles?: Role[] }
   | { type: "PICK_ROLE"; teamIdx: number; role: Role }
   | { type: "NEXT_PICKER" }
   | { type: "GO_TO_RULES" }
@@ -78,6 +85,7 @@ export type GameAction =
   | { type: "SET_PHOTO"; teamIdx: number; url: string }
   | { type: "SET_AWARDS"; order: [number, number, number] }
   | { type: "GO_TO_AWARDS"; place: "3rd" | "2nd" | "1st" }
+  | { type: "PUBLISH_AWARDS"; scores: Record<number, number>; order: [number, number, number] }
   | { type: "RESET" };
 
 export const initialState: GameState = {

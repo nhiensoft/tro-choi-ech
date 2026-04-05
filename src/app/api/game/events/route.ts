@@ -1,28 +1,67 @@
-import { addSSEClient, removeSSEClient } from "@/lib/server-game-store";
+import { getState, getVersion } from "@/lib/server-game-store";
 
 export const dynamic = "force-dynamic";
 
-type SSEClient = Awaited<ReturnType<typeof addSSEClient>>;
+const POLL_INTERVAL = 500; // ms — check KV for changes every 500ms
+const HEARTBEAT_INTERVAL = 15000; // ms
 
 export async function GET() {
-  let client: SSEClient | null = null;
-  let heartbeatInterval: ReturnType<typeof setInterval> | null = null;
+  const encoder = new TextEncoder();
+  let lastVersion = -1;
+  let stopped = false;
 
   const stream = new ReadableStream({
     async start(controller) {
-      client = await addSSEClient(controller);
+      // Send initial state immediately
+      try {
+        const state = await getState();
+        lastVersion = getVersion();
+        const payload = `data: ${JSON.stringify({ state, version: lastVersion })}\n\n`;
+        controller.enqueue(encoder.encode(payload));
+      } catch {
+        // ignore initial fetch error
+      }
 
-      heartbeatInterval = setInterval(() => {
+      // Poll KV for state changes
+      const pollTimer = setInterval(async () => {
+        if (stopped) return;
         try {
-          controller.enqueue(new TextEncoder().encode(": heartbeat\n\n"));
+          const currentVersion = await getVersionFromKV();
+          if (currentVersion !== lastVersion) {
+            const state = await getState(true); // force refresh from KV
+            lastVersion = currentVersion;
+            const payload = `data: ${JSON.stringify({ state, version: currentVersion })}\n\n`;
+            controller.enqueue(encoder.encode(payload));
+          }
         } catch {
-          if (heartbeatInterval) clearInterval(heartbeatInterval);
+          // KV read failed — skip this tick
         }
-      }, 30000);
+      }, POLL_INTERVAL);
+
+      // Heartbeat to keep connection alive
+      const heartbeatTimer = setInterval(() => {
+        if (stopped) return;
+        try {
+          controller.enqueue(encoder.encode(": heartbeat\n\n"));
+        } catch {
+          // connection dead
+        }
+      }, HEARTBEAT_INTERVAL);
+
+      // Cleanup on cancel
+      const cleanup = () => {
+        stopped = true;
+        clearInterval(pollTimer);
+        clearInterval(heartbeatTimer);
+      };
+
+      // Store cleanup ref for cancel()
+      (controller as unknown as Record<string, () => void>).__cleanup = cleanup;
     },
-    cancel() {
-      if (heartbeatInterval) clearInterval(heartbeatInterval);
-      if (client) removeSSEClient(client);
+    cancel(controller) {
+      stopped = true;
+      const ctrl = controller as unknown as Record<string, () => void>;
+      if (ctrl.__cleanup) ctrl.__cleanup();
     },
   });
 
@@ -34,4 +73,11 @@ export async function GET() {
       "X-Accel-Buffering": "no",
     },
   });
+}
+
+// Direct KV version check (lightweight — just reads version number)
+async function getVersionFromKV(): Promise<number> {
+  const { kv } = await import("@vercel/kv");
+  const version = await kv.get<number>("game-version");
+  return version ?? 0;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCountdown } from "@/hooks/use-countdown";
-import { getRounds, type GameState, type GameStep, type Role } from "@/lib/game-types";
+import { parseRoundStep, getRounds, type GameState, type Role } from "@/lib/game-types";
 import { DecorativeBg } from "./decorative-bg";
 
 const ROLE_STYLE: Record<Role, { text: string; border: string; bg: string; glow: string; cardBorder: string }> = {
@@ -27,12 +27,6 @@ const ROLE_STYLE: Record<Role, { text: string; border: string; bg: string; glow:
     cardBorder: "rgba(8,145,178,0.3)",
   },
 };
-
-function parseRoundStep(step: GameStep): { round: number; phase: "ask" | "respond" } | null {
-  const match = step.match(/^round-(\d)-(\w+)$/);
-  if (!match) return null;
-  return { round: Number(match[1]), phase: match[2] as "ask" | "respond" };
-}
 
 export function ViewerRound({ state }: { state: GameState }) {
   const parsed = parseRoundStep(state.step);

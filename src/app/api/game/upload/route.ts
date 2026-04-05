@@ -1,19 +1,14 @@
 import { cookies } from "next/headers";
-import { createHmac } from "crypto";
+import { verifyAdminSession } from "@/lib/auth";
 import { kv } from "@vercel/kv";
 
-function verifyAdmin(cookieValue: string): boolean {
-  const password = process.env.ADMIN_PASSWORD;
-  if (!password) return false;
-  const expected = createHmac("sha256", password).update("admin").digest("hex");
-  return cookieValue === expected;
-}
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 export async function POST(request: Request) {
   const cookieStore = await cookies();
   const session = cookieStore.get("admin-session")?.value;
 
-  if (!session || !verifyAdmin(session)) {
+  if (!session || !verifyAdminSession(session)) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -25,14 +20,29 @@ export async function POST(request: Request) {
     return Response.json({ error: "Missing file or teamIdx" }, { status: 400 });
   }
 
+  // Validate teamIdx is strictly 0, 1, or 2
+  const teamIdxNum = Number(teamIdx);
+  if (!Number.isInteger(teamIdxNum) || teamIdxNum < 0 || teamIdxNum > 2) {
+    return Response.json({ error: "Invalid teamIdx" }, { status: 400 });
+  }
+
+  // Validate file type
+  if (!file.type.startsWith("image/")) {
+    return Response.json({ error: "Chỉ chấp nhận file ảnh" }, { status: 400 });
+  }
+
+  // Validate file size
+  if (file.size > MAX_FILE_SIZE) {
+    return Response.json({ error: "File quá lớn (tối đa 5MB)" }, { status: 400 });
+  }
+
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
   const base64 = buffer.toString("base64");
-  const contentType = file.type || "image/png";
+  const contentType = file.type;
 
-  // Store in KV with key like "photo:0"
-  await kv.set(`photo:${teamIdx}`, { base64, contentType }, { ex: 86400 }); // 24h TTL
+  await kv.set(`photo:${teamIdxNum}`, { base64, contentType }, { ex: 86400 }); // 24h TTL
 
-  const url = `/api/game/photo?idx=${teamIdx}&t=${Date.now()}`;
+  const url = `/api/game/photo?idx=${teamIdxNum}&t=${Date.now()}`;
   return Response.json({ url });
 }

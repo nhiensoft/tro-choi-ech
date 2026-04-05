@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { createHmac } from "crypto";
+import { generateAdminToken } from "@/lib/auth";
 
 export async function POST(request: Request) {
   const { password } = (await request.json()) as { password: string };
@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     return Response.json({ error: "Sai mật khẩu" }, { status: 401 });
   }
 
-  const token = createHmac("sha256", adminPassword).update("admin").digest("hex");
+  const token = generateAdminToken(adminPassword);
 
   const cookieStore = await cookies();
   cookieStore.set("admin-session", token, {

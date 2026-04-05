@@ -17,13 +17,13 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-// === In-memory cache (fast reads within same serverless invocation) ===
+// === In-memory cache (per serverless invocation) ===
 
 let cachedState: GameState | null = null;
 let cachedVersion = 0;
 
-async function loadState(): Promise<GameState> {
-  if (cachedState) return cachedState;
+async function loadState(forceRefresh = false): Promise<GameState> {
+  if (cachedState && !forceRefresh) return cachedState;
   try {
     const stored = await kv.get<GameState>(KV_KEY);
     if (stored) {
@@ -32,7 +32,7 @@ async function loadState(): Promise<GameState> {
       return stored;
     }
   } catch {
-    // KV not available (local dev without KV) — use initial
+    // KV not available — use initial
   }
   cachedState = { ...initialState };
   cachedVersion = 0;
@@ -48,30 +48,10 @@ async function persistState(state: GameState, version: number) {
   }
 }
 
-// === SSE clients ===
-
-type SSEClient = {
-  controller: ReadableStreamDefaultController;
-  encoder: TextEncoder;
-};
-
-const clients = new Set<SSEClient>();
-
-function broadcastState() {
-  const payload = `data: ${JSON.stringify({ state: cachedState, version: cachedVersion })}\n\n`;
-  for (const client of clients) {
-    try {
-      client.controller.enqueue(client.encoder.encode(payload));
-    } catch {
-      clients.delete(client);
-    }
-  }
-}
-
 // === Public API ===
 
-export async function getState(): Promise<GameState> {
-  return loadState();
+export async function getState(forceRefresh = false): Promise<GameState> {
+  return loadState(forceRefresh);
 }
 
 export function getVersion(): number {
@@ -79,8 +59,8 @@ export function getVersion(): number {
 }
 
 export async function dispatch(action: GameAction): Promise<GameState> {
-  // Ensure state is loaded
-  await loadState();
+  // Always load fresh state from KV before dispatching
+  await loadState(true);
 
   // For SET_TEAMS, pre-compute shuffled values (reducer must be pure)
   if (action.type === "SET_TEAMS") {
@@ -92,23 +72,5 @@ export async function dispatch(action: GameAction): Promise<GameState> {
   cachedState = gameReducer(cachedState!, action);
   cachedVersion++;
   await persistState(cachedState, cachedVersion);
-  broadcastState();
   return cachedState;
-}
-
-export async function addSSEClient(controller: ReadableStreamDefaultController): Promise<SSEClient> {
-  const encoder = new TextEncoder();
-  const client: SSEClient = { controller, encoder };
-  clients.add(client);
-
-  // Send current state immediately
-  const state = await loadState();
-  const payload = `data: ${JSON.stringify({ state, version: cachedVersion })}\n\n`;
-  controller.enqueue(encoder.encode(payload));
-
-  return client;
-}
-
-export function removeSSEClient(client: SSEClient) {
-  clients.delete(client);
 }

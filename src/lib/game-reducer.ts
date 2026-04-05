@@ -3,11 +3,13 @@ import { type GameState, type GameAction, initialState } from "./game-types";
 export function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
     case "SET_TEAMS": {
+      // pickOrder and remainingRoles are pre-computed by server-game-store (shuffle)
+      // and injected before reaching the reducer; fallback to initialState values if missing
       return {
         ...initialState,
         teams: action.teams,
-        pickOrder: action.pickOrder,
-        remainingRoles: action.remainingRoles,
+        pickOrder: action.pickOrder ?? initialState.pickOrder,
+        remainingRoles: action.remainingRoles ?? initialState.remainingRoles,
         step: "rules",
         currentPickerIdx: 0,
       };
@@ -83,6 +85,15 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     case "GO_TO_AWARDS": {
       const stepByPlace = { "3rd": "awards-3rd", "2nd": "awards-2nd", "1st": "awards-1st" } as const;
       return { ...state, step: stepByPlace[action.place] };
+    }
+
+    case "PUBLISH_AWARDS": {
+      return {
+        ...state,
+        scores: action.scores,
+        awardsOrder: action.order,
+        step: "awards-3rd",
+      };
     }
 
     case "RESET":

@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAdminAction } from "@/hooks/use-admin-action";
-import { getRounds, type GameState, type GameStep, type Role } from "@/lib/game-types";
+import { usePhotoUpload } from "@/hooks/use-photo-upload";
+import { parseRoundStep, getRounds, type GameState, type GameAction, type Role } from "@/lib/game-types";
 import { useCountdown } from "@/hooks/use-countdown";
 
 export function AdminControls({ state }: { state: GameState }) {
@@ -39,51 +40,40 @@ export function AdminControls({ state }: { state: GameState }) {
   );
 }
 
-type Dispatch = (a: never) => Promise<unknown>;
+type Dispatch = (action: GameAction) => Promise<unknown>;
 
 // === Step: Input ===
 
 function InputControls({ dispatch }: { dispatch: Dispatch }) {
   const [names, setNames] = useState(["", "", ""]);
-  const [previews, setPreviews] = useState<(string | null)[]>([null, null, null]);
-  const [uploading, setUploading] = useState<boolean[]>([false, false, false]);
-  const [error, setError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const { upload, uploading, previews, error: uploadError } = usePhotoUpload();
 
   const handleUpload = async (file: File, idx: number) => {
-    setUploading((prev) => { const n = [...prev]; n[idx] = true; return n; });
-    try {
-      const form = new FormData();
-      form.append("file", file);
-      form.append("teamIdx", String(idx));
-      const res = await fetch("/api/game/upload", { method: "POST", body: form });
-      if (!res.ok) throw new Error("Upload failed");
-      const { url } = await res.json();
-      // Show local preview
-      setPreviews((prev) => { const n = [...prev]; n[idx] = URL.createObjectURL(file); return n; });
-      // Save photo URL to game state
-      dispatch({ type: "SET_PHOTO", teamIdx: idx, url } as never);
-    } catch {
-      setError(`Upload ảnh đội ${idx + 1} thất bại`);
-    } finally {
-      setUploading((prev) => { const n = [...prev]; n[idx] = false; return n; });
+    const url = await upload(file, idx);
+    if (url) {
+      dispatch({ type: "SET_PHOTO", teamIdx: idx, url });
     }
   };
 
   const handleStart = () => {
     const trimmed = names.map((n) => n.trim());
     if (trimmed.some((n) => n === "")) {
-      setError("Nhập đủ 3 tên đội");
+      setNameError("Nhập đủ 3 tên đội");
       return;
     }
     if (new Set(trimmed).size !== 3) {
-      setError("Tên đội phải khác nhau");
+      setNameError("Tên đội phải khác nhau");
       return;
     }
+    // pickOrder and remainingRoles are omitted — server-game-store re-computes them via shuffle
     dispatch({
       type: "SET_TEAMS",
       teams: trimmed as [string, string, string],
-    } as never);
+    });
   };
+
+  const displayError = nameError || uploadError;
 
   return (
     <div className="space-y-3 p-4 rounded-xl border-2 bg-card">
@@ -98,7 +88,7 @@ function InputControls({ dispatch }: { dispatch: Dispatch }) {
               const next = [...names];
               next[i] = (e.target as HTMLInputElement).value;
               setNames(next);
-              if (error) setError("");
+              if (nameError) setNameError("");
             }}
             className="h-9 border"
           />
@@ -119,14 +109,14 @@ function InputControls({ dispatch }: { dispatch: Dispatch }) {
           </label>
           {previews[i] && (
             <img
-              src={previews[i]!}
+              src={previews[i]}
               alt={`Preview ${label}`}
               className="w-full h-20 object-cover rounded-md border"
             />
           )}
         </div>
       ))}
-      {error && <p className="text-xs text-destructive">{error}</p>}
+      {displayError && <p className="text-xs text-destructive">{displayError}</p>}
       <Button
         onClick={handleStart}
         className="w-full cursor-pointer bg-accent text-accent-foreground hover:bg-accent/90"
@@ -144,7 +134,7 @@ function RulesControls({ dispatch }: { dispatch: Dispatch }) {
     <div className="space-y-3 p-4 rounded-xl border-2 bg-card">
       <p className="text-sm font-semibold text-muted-foreground">Viewer đang xem luật chơi</p>
       <Button
-        onClick={() => dispatch({ type: "GO_TO_ROLE_PICK" } as never)}
+        onClick={() => dispatch({ type: "GO_TO_ROLE_PICK" })}
         className="w-full cursor-pointer bg-primary text-primary-foreground hover:bg-primary/90"
       >
         Sang bốc vai trò
@@ -162,14 +152,14 @@ function RolePickControls({ state, dispatch }: { state: GameState; dispatch: Dis
   const hasPickedRole = !!state.roles[currentTeamIdx];
 
   const handlePickRole = (role: Role) => {
-    dispatch({ type: "PICK_ROLE", teamIdx: currentTeamIdx, role } as never);
+    dispatch({ type: "PICK_ROLE", teamIdx: currentTeamIdx, role });
   };
 
   const handleNext = () => {
     if (state.currentPickerIdx < 2) {
-      dispatch({ type: "NEXT_PICKER" } as never);
+      dispatch({ type: "NEXT_PICKER" });
     } else {
-      dispatch({ type: "GO_TO_MATCHUP" } as never);
+      dispatch({ type: "GO_TO_MATCHUP" });
     }
   };
 
@@ -234,7 +224,7 @@ function MatchupControls({ dispatch }: { dispatch: Dispatch }) {
     <div className="space-y-3 p-4 rounded-xl border-2 bg-card">
       <p className="text-sm font-semibold text-muted-foreground">Viewer đang xem cặp thi đấu</p>
       <Button
-        onClick={() => dispatch({ type: "GO_TO_ROUND", round: 1, phase: "ask" } as never)}
+        onClick={() => dispatch({ type: "GO_TO_ROUND", round: 1, phase: "ask" })}
         className="w-full cursor-pointer bg-primary text-primary-foreground hover:bg-primary/90"
       >
         Bắt đầu Chặng 1
@@ -244,12 +234,6 @@ function MatchupControls({ dispatch }: { dispatch: Dispatch }) {
 }
 
 // === Step: Round ===
-
-function parseRoundStep(step: GameStep): { round: number; phase: "ask" | "respond" } | null {
-  const match = step.match(/^round-(\d)-(\w+)$/);
-  if (!match) return null;
-  return { round: Number(match[1]), phase: match[2] as "ask" | "respond" };
-}
 
 function RoundControls({ state, dispatch }: { state: GameState; dispatch: Dispatch }) {
   const parsed = parseRoundStep(state.step);
@@ -267,19 +251,16 @@ function RoundControls({ state, dispatch }: { state: GameState; dispatch: Dispat
   const duration = isAsk ? 120 : 180; // 2 min ask, 3 min respond
 
   const handleStartTimer = () => {
-    dispatch({ type: "START_TIMER", duration } as never);
+    dispatch({ type: "START_TIMER", duration });
   };
 
   const handleNext = () => {
     if (isAsk) {
-      // Switch to respond phase
-      dispatch({ type: "GO_TO_ROUND", round: round as 1 | 2 | 3, phase: "respond" } as never);
+      dispatch({ type: "GO_TO_ROUND", round: round as 1 | 2 | 3, phase: "respond" });
     } else if (round < 3) {
-      // Next round
-      dispatch({ type: "GO_TO_ROUND", round: (round + 1) as 1 | 2 | 3, phase: "ask" } as never);
+      dispatch({ type: "GO_TO_ROUND", round: (round + 1) as 1 | 2 | 3, phase: "ask" });
     } else {
-      // All rounds done
-      dispatch({ type: "GO_TO_COMPLETION" } as never);
+      dispatch({ type: "GO_TO_COMPLETION" });
     }
   };
 
@@ -337,7 +318,7 @@ function CompletionControls({ dispatch }: { dispatch: Dispatch }) {
     <div className="space-y-3 p-4 rounded-xl border-2 bg-card">
       <p className="text-sm font-semibold text-muted-foreground">Đã hoàn thành 3 chặng!</p>
       <Button
-        onClick={() => dispatch({ type: "GO_TO_SCORING" } as never)}
+        onClick={() => dispatch({ type: "GO_TO_SCORING" })}
         className="w-full cursor-pointer bg-primary text-primary-foreground hover:bg-primary/90"
       >
         Nhập điểm & công bố
@@ -354,29 +335,19 @@ function ScoringControls({ state, dispatch }: { state: GameState; dispatch: Disp
     1: String(state.scores[1] ?? ""),
     2: String(state.scores[2] ?? ""),
   });
-  const [uploading, setUploading] = useState<Record<number, boolean>>({ 0: false, 1: false, 2: false });
   const [error, setError] = useState("");
+  const { upload, uploading, error: uploadError } = usePhotoUpload();
 
   const handleSaveScore = (idx: number) => {
     const val = Number(scores[idx]);
     if (isNaN(val)) return;
-    dispatch({ type: "SET_SCORE", teamIdx: idx, score: val } as never);
+    dispatch({ type: "SET_SCORE", teamIdx: idx, score: val });
   };
 
   const handleUpload = async (file: File, idx: number) => {
-    setUploading((prev) => ({ ...prev, [idx]: true }));
-    try {
-      const form = new FormData();
-      form.append("file", file);
-      form.append("teamIdx", String(idx));
-      const res = await fetch("/api/game/upload", { method: "POST", body: form });
-      if (!res.ok) throw new Error("Upload failed");
-      const { url } = await res.json();
-      dispatch({ type: "SET_PHOTO", teamIdx: idx, url } as never);
-    } catch {
-      setError(`Upload ảnh đội ${idx + 1} thất bại`);
-    } finally {
-      setUploading((prev) => ({ ...prev, [idx]: false }));
+    const url = await upload(file, idx);
+    if (url) {
+      dispatch({ type: "SET_PHOTO", teamIdx: idx, url });
     }
   };
 
@@ -387,18 +358,15 @@ function ScoringControls({ state, dispatch }: { state: GameState; dispatch: Disp
       return;
     }
 
-    for (let i = 0; i < 3; i++) {
-      dispatch({ type: "SET_SCORE", teamIdx: i, score: allScores[i] } as never);
-    }
-
+    const scoresRecord: Record<number, number> = { 0: allScores[0], 1: allScores[1], 2: allScores[2] };
     const ranked = [0, 1, 2].sort((a, b) => allScores[b] - allScores[a]);
     const order: [number, number, number] = [ranked[0], ranked[1], ranked[2]];
-    dispatch({ type: "SET_AWARDS", order } as never);
 
-    setTimeout(() => {
-      dispatch({ type: "GO_TO_AWARDS", place: "3rd" } as never);
-    }, 300);
+    // Atomic: set scores + awards order + navigate to awards-3rd in one dispatch
+    dispatch({ type: "PUBLISH_AWARDS", scores: scoresRecord, order });
   };
+
+  const displayError = error || uploadError;
 
   return (
     <div className="space-y-3 p-4 rounded-xl border-2 bg-card">
@@ -447,7 +415,7 @@ function ScoringControls({ state, dispatch }: { state: GameState; dispatch: Disp
         </div>
       ))}
 
-      {error && <p className="text-xs text-destructive">{error}</p>}
+      {displayError && <p className="text-xs text-destructive">{displayError}</p>}
 
       <Button
         onClick={handlePublish}
@@ -466,39 +434,42 @@ function AwardsControls({ state, dispatch }: { state: GameState; dispatch: Dispa
 
   const handleNext = () => {
     if (step === "awards-3rd") {
-      dispatch({ type: "GO_TO_AWARDS", place: "2nd" } as never);
+      dispatch({ type: "GO_TO_AWARDS", place: "2nd" });
     } else if (step === "awards-2nd") {
-      dispatch({ type: "GO_TO_AWARDS", place: "1st" } as never);
+      dispatch({ type: "GO_TO_AWARDS", place: "1st" });
     }
   };
 
-  const label = step === "awards-3rd"
-    ? "Giải Ba"
-    : step === "awards-2nd"
-      ? "Giải Nhì"
-      : "Giải Nhất";
+  const label =
+    step === "awards-3rd" ? "Giải Ba" : step === "awards-2nd" ? "Giải Nhì" : "Giải Nhất";
 
   const isLast = step === "awards-1st";
 
   return (
     <div className="space-y-3 p-4 rounded-xl border-2 bg-card">
-      <p className="text-sm font-semibold text-muted-foreground">
-        Đang công bố: {label}
-      </p>
+      <p className="text-sm font-semibold text-muted-foreground">Đang công bố: {label}</p>
 
       {state.awardsOrder && (
         <div className="text-sm space-y-1">
           {step === "awards-3rd" && (
-            <p>Giải Ba: <strong>{state.teams[state.awardsOrder[2]]}</strong></p>
+            <p>
+              Giải Ba: <strong>{state.teams[state.awardsOrder[2]]}</strong>
+            </p>
           )}
           {(step === "awards-2nd" || step === "awards-1st") && (
             <>
-              <p>Giải Ba: <strong>{state.teams[state.awardsOrder[2]]}</strong></p>
-              <p>Giải Nhì: <strong>{state.teams[state.awardsOrder[1]]}</strong></p>
+              <p>
+                Giải Ba: <strong>{state.teams[state.awardsOrder[2]]}</strong>
+              </p>
+              <p>
+                Giải Nhì: <strong>{state.teams[state.awardsOrder[1]]}</strong>
+              </p>
             </>
           )}
           {step === "awards-1st" && (
-            <p>Giải Nhất: <strong>{state.teams[state.awardsOrder[0]]}</strong></p>
+            <p>
+              Giải Nhất: <strong>{state.teams[state.awardsOrder[0]]}</strong>
+            </p>
           )}
         </div>
       )}
@@ -514,7 +485,7 @@ function AwardsControls({ state, dispatch }: { state: GameState; dispatch: Dispa
 
       {isLast && (
         <Button
-          onClick={() => dispatch({ type: "RESET" } as never)}
+          onClick={() => dispatch({ type: "RESET" })}
           className="w-full cursor-pointer bg-accent text-accent-foreground hover:bg-accent/90"
         >
           Chơi lại
