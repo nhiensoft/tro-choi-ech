@@ -2,9 +2,12 @@
 
 import { useGameSync } from "@/hooks/use-game-sync";
 import { ViewerWaiting } from "./viewer-waiting";
+import { ViewerRules } from "./viewer-rules";
 import { ViewerRoleReveal } from "./viewer-role-reveal";
-import { ViewerDebateReveal } from "./viewer-debate-reveal";
-import { ViewerResult } from "./viewer-result";
+import { ViewerMatchup } from "./viewer-matchup";
+import { ViewerRound } from "./viewer-round";
+import { ViewerCompletion } from "./viewer-completion";
+import { ViewerAwards } from "./viewer-awards";
 
 export function ViewerShell() {
   const { state, isConnected } = useGameSync();
@@ -16,6 +19,9 @@ export function ViewerShell() {
       </div>
     );
   }
+
+  const isRound = state.step.startsWith("round-");
+  const isAwards = state.step.startsWith("awards-");
 
   return (
     <div className="relative">
@@ -30,9 +36,13 @@ export function ViewerShell() {
 
       {/* Game view */}
       {state.step === "input" && <ViewerWaiting />}
+      {state.step === "rules" && <ViewerRules />}
       {state.step === "role-pick" && <ViewerRoleReveal state={state} />}
-      {state.step === "debate-pick" && <ViewerDebateReveal state={state} />}
-      {state.step === "result" && <ViewerResult state={state} />}
+      {state.step === "matchup-reveal" && <ViewerMatchup state={state} />}
+      {isRound && <ViewerRound state={state} />}
+      {state.step === "completion" && <ViewerCompletion />}
+      {state.step === "scoring" && <ViewerCompletion />}
+      {isAwards && <ViewerAwards state={state} />}
     </div>
   );
 }

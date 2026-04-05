@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useGameSync } from "@/hooks/use-game-sync";
 import { AdminControls } from "./admin-controls";
 import { Button } from "@/components/ui/button";
+import { getRounds } from "@/lib/game-types";
 
 export function AdminShell() {
   const { state, isConnected } = useGameSync();
@@ -21,6 +22,9 @@ export function AdminShell() {
       </div>
     );
   }
+
+  const hasRoles = Object.keys(state.roles).length > 0;
+  const rounds = hasRoles ? getRounds(state.roles) : [];
 
   return (
     <div className="min-h-screen p-6">
@@ -56,7 +60,7 @@ export function AdminShell() {
                 </p>
               </div>
             )}
-            {Object.keys(state.roles).length > 0 && (
+            {hasRoles && (
               <div>
                 <p className="font-semibold">Vai trò:</p>
                 {Object.entries(state.roles).map(([idx, role]) => (
@@ -66,12 +70,22 @@ export function AdminShell() {
                 ))}
               </div>
             )}
-            {Object.keys(state.debates).length > 0 && (
+            {rounds.length > 0 && (
               <div>
-                <p className="font-semibold">Phản biện:</p>
-                {Object.entries(state.debates).map(([idx, target]) => (
+                <p className="font-semibold">Chặng thi:</p>
+                {rounds.map((r) => (
+                  <p key={r.roundNumber} className="text-muted-foreground">
+                    Chặng {r.roundNumber}: {state.teams[r.askerIdx]} ({r.askerRole}) → {state.teams[r.responderIdx]} ({r.responderRole})
+                  </p>
+                ))}
+              </div>
+            )}
+            {Object.keys(state.scores).length > 0 && (
+              <div>
+                <p className="font-semibold">Điểm:</p>
+                {Object.entries(state.scores).map(([idx, score]) => (
                   <p key={idx} className="text-muted-foreground">
-                    {state.teams[Number(idx)]} → {state.teams[Number(target)]}
+                    {state.teams[Number(idx)]}: {score} điểm
                   </p>
                 ))}
               </div>

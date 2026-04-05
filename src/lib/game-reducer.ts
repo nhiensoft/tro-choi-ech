@@ -8,10 +8,16 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         teams: action.teams,
         pickOrder: action.pickOrder,
         remainingRoles: action.remainingRoles,
-        step: "role-pick",
+        step: "rules",
         currentPickerIdx: 0,
       };
     }
+
+    case "GO_TO_RULES":
+      return { ...state, step: "rules" };
+
+    case "GO_TO_ROLE_PICK":
+      return { ...state, step: "role-pick", currentPickerIdx: 0 };
 
     case "PICK_ROLE": {
       return {
@@ -22,42 +28,65 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     }
 
     case "NEXT_PICKER": {
+      return { ...state, currentPickerIdx: state.currentPickerIdx + 1 };
+    }
+
+    case "GO_TO_MATCHUP": {
+      return { ...state, step: "matchup-reveal", timerStartedAt: null, timerDuration: null };
+    }
+
+    case "GO_TO_ROUND": {
+      const stepMap = {
+        "1-ask": "round-1-ask",
+        "1-respond": "round-1-respond",
+        "2-ask": "round-2-ask",
+        "2-respond": "round-2-respond",
+        "3-ask": "round-3-ask",
+        "3-respond": "round-3-respond",
+      } as const;
+      const key = `${action.round}-${action.phase}` as keyof typeof stepMap;
       return {
         ...state,
-        currentPickerIdx: state.currentPickerIdx + 1,
+        step: stepMap[key],
+        timerStartedAt: null,
+        timerDuration: null,
       };
     }
 
-    case "GO_TO_DEBATE": {
+    case "START_TIMER": {
       return {
         ...state,
-        step: "debate-pick",
-        currentPickerIdx: 0,
+        timerStartedAt: Date.now(),
+        timerDuration: action.duration,
       };
     }
 
-    case "PICK_DEBATE": {
-      const { teamIdx, targetIdx } = action;
-      const thirdIdx = [0, 1, 2].find(
-        (i) => i !== teamIdx && i !== targetIdx
-      )!;
-      return {
-        ...state,
-        debates: {
-          [teamIdx]: targetIdx,
-          [targetIdx]: thirdIdx,
-          [thirdIdx]: teamIdx,
-        },
-      };
+    case "STOP_TIMER": {
+      return { ...state, timerStartedAt: null, timerDuration: null };
     }
 
-    case "GO_TO_RESULT": {
-      return { ...state, step: "result" };
+    case "GO_TO_COMPLETION":
+      return { ...state, step: "completion", timerStartedAt: null, timerDuration: null };
+
+    case "GO_TO_SCORING":
+      return { ...state, step: "scoring" };
+
+    case "SET_SCORE":
+      return { ...state, scores: { ...state.scores, [action.teamIdx]: action.score } };
+
+    case "SET_PHOTO":
+      return { ...state, teamPhotos: { ...state.teamPhotos, [action.teamIdx]: action.url } };
+
+    case "SET_AWARDS":
+      return { ...state, awardsOrder: action.order };
+
+    case "GO_TO_AWARDS": {
+      const stepByPlace = { "3rd": "awards-3rd", "2nd": "awards-2nd", "1st": "awards-1st" } as const;
+      return { ...state, step: stepByPlace[action.place] };
     }
 
-    case "RESET": {
+    case "RESET":
       return { ...initialState };
-    }
 
     default:
       return state;
