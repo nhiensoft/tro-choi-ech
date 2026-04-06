@@ -27,9 +27,10 @@ async function loadState(forceRefresh = false): Promise<GameState> {
   try {
     const stored = await kv.get<GameState>(KV_KEY);
     if (stored) {
-      cachedState = stored;
+      // Merge with initialState so new fields added later are never undefined
+      cachedState = { ...initialState, ...stored };
       cachedVersion = (await kv.get<number>(KV_VERSION_KEY)) ?? 0;
-      return stored;
+      return cachedState;
     }
   } catch {
     // KV not available — use initial

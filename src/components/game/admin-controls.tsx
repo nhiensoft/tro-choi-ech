@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAdminAction } from "@/hooks/use-admin-action";
 import { usePhotoUpload } from "@/hooks/use-photo-upload";
-import { parseRoundStep, getRounds, type GameState, type GameAction, type Role } from "@/lib/game-types";
+import { parseRoundStep, getRounds, type GameState, type GameAction } from "@/lib/game-types";
 import { useCountdown } from "@/hooks/use-countdown";
 
 export function AdminControls({ state }: { state: GameState }) {
@@ -151,10 +151,14 @@ function RulesControls({ dispatch }: { dispatch: Dispatch }) {
 function RolePickControls({ state, dispatch }: { state: GameState; dispatch: Dispatch }) {
   const currentTeamIdx = state.pickOrder[state.currentPickerIdx];
   const currentTeamName = state.teams[currentTeamIdx];
-  const isLastTeam = state.currentPickerIdx === 2;
   const hasPickedRole = !!state.roles[currentTeamIdx];
 
-  const handlePickRole = (role: Role) => {
+  // Determine which boxes have been opened
+  const assignedRoles = new Set(Object.values(state.roles));
+  const isBoxOpened = (boxIdx: number) => assignedRoles.has(state.boxRoles[boxIdx]);
+
+  const handlePickBox = (boxIdx: number) => {
+    const role = state.boxRoles[boxIdx];
     dispatch({ type: "PICK_ROLE", teamIdx: currentTeamIdx, role });
   };
 
@@ -166,10 +170,15 @@ function RolePickControls({ state, dispatch }: { state: GameState; dispatch: Dis
     }
   };
 
-  const handleAutoPickLast = () => {
-    if (state.remainingRoles.length === 1) {
-      handlePickRole(state.remainingRoles[0]);
+  // Find which team picked which box
+  const getTeamForBox = (boxIdx: number): string | null => {
+    const role = state.boxRoles[boxIdx];
+    for (const [teamIdx, assignedRole] of Object.entries(state.roles)) {
+      if (assignedRole === role) {
+        return state.teams[Number(teamIdx)];
+      }
     }
+    return null;
   };
 
   return (
@@ -180,26 +189,29 @@ function RolePickControls({ state, dispatch }: { state: GameState; dispatch: Dis
 
       {!hasPickedRole && (
         <div className="space-y-2">
-          <p className="text-xs text-muted-foreground">Chọn vai trò:</p>
-          {isLastTeam ? (
-            <Button
-              onClick={handleAutoPickLast}
-              className="w-full cursor-pointer bg-accent text-accent-foreground hover:bg-accent/90"
-            >
-              Lật lá bài ({state.remainingRoles[0]})
-            </Button>
-          ) : (
-            state.remainingRoles.map((role) => (
-              <Button
-                key={role}
-                onClick={() => handlePickRole(role)}
-                variant="outline"
-                className="w-full cursor-pointer"
-              >
-                {role}
-              </Button>
-            ))
-          )}
+          <p className="text-xs text-muted-foreground">Đội chọn hộp số mấy?</p>
+          <div className="grid grid-cols-3 gap-2">
+            {state.boxRoles.map((role, boxIdx) => {
+              const opened = isBoxOpened(boxIdx);
+              const teamName = getTeamForBox(boxIdx);
+              return (
+                <Button
+                  key={boxIdx}
+                  onClick={() => handlePickBox(boxIdx)}
+                  disabled={opened}
+                  variant={opened ? "ghost" : "outline"}
+                  className={`cursor-pointer h-auto py-3 flex flex-col gap-1 ${opened ? "opacity-50" : "border-2 hover:border-primary"}`}
+                >
+                  <span className="text-lg font-bold">{boxIdx + 1}</span>
+                  {opened && (
+                    <span className="text-[10px] text-muted-foreground leading-tight">
+                      {role} — {teamName}
+                    </span>
+                  )}
+                </Button>
+              );
+            })}
+          </div>
         </div>
       )}
 

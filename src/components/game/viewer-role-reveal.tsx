@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FlipCard } from "@/components/game/flip-card";
 import { useSound } from "@/hooks/use-sound";
-import { ROLES, type GameState, type Role } from "@/lib/game-types";
+import { type GameState, type Role } from "@/lib/game-types";
 import { DecorativeBg } from "./decorative-bg";
 
 const ROLE_TEXT_COLOR: Record<Role, string> = {
@@ -17,29 +17,53 @@ export function ViewerRoleReveal({ state }: { state: GameState }) {
   const currentTeamIdx = state.pickOrder[state.currentPickerIdx];
   const currentTeamName = state.teams[currentTeamIdx];
 
-  const [revealedRoles, setRevealedRoles] = useState<Set<string>>(new Set());
+  // Track which box indices have been revealed (with animation)
+  const [revealedBoxes, setRevealedBoxes] = useState<Set<number>>(new Set());
   const prevRolesCountRef = useRef(Object.keys(state.roles).length);
 
+  // Determine which boxes are opened based on roles assigned
+  const assignedRoles = new Set(Object.values(state.roles));
+  // Initialize revealed boxes from existing state (for late-joining viewers)
+  useEffect(() => {
+    const initialRevealed = new Set<number>();
+    state.boxRoles.forEach((role, idx) => {
+      if (assignedRoles.has(role)) {
+        initialRevealed.add(idx);
+      }
+    });
+    if (initialRevealed.size > 0 && revealedBoxes.size === 0) {
+      setRevealedBoxes(initialRevealed);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // When a new role is picked, reveal the corresponding box with sound
   useEffect(() => {
     const currentCount = Object.keys(state.roles).length;
     if (currentCount > prevRolesCountRef.current) {
       play("reveal");
-      const newRoles = new Set<string>();
-      for (const [, role] of Object.entries(state.roles)) {
-        newRoles.add(role);
-      }
-      setRevealedRoles(newRoles);
+      // Find newly opened box
+      const newRevealed = new Set(revealedBoxes);
+      state.boxRoles.forEach((role, idx) => {
+        if (assignedRoles.has(role)) {
+          newRevealed.add(idx);
+        }
+      });
+      setRevealedBoxes(newRevealed);
     }
     prevRolesCountRef.current = currentCount;
-  }, [state.roles, play]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.roles]);
 
-  const assignedList = state.pickOrder
-    .slice(0, state.currentPickerIdx + 1)
-    .filter((idx) => state.roles[idx])
-    .map((idx) => ({
-      teamName: state.teams[idx],
-      role: state.roles[idx],
-    }));
+  // Find which team picked which box
+  const getTeamForRole = (role: Role): string | null => {
+    for (const [teamIdx, assignedRole] of Object.entries(state.roles)) {
+      if (assignedRole === role) {
+        return state.teams[Number(teamIdx)];
+      }
+    }
+    return null;
+  };
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen gap-8 px-8 pb-8 pt-12 overflow-hidden">
@@ -76,60 +100,43 @@ export function ViewerRoleReveal({ state }: { state: GameState }) {
           </div>
         </div>
 
-        {/* Cards */}
+        {/* 3 Numbered Gift Boxes */}
         <div className="flex gap-6 items-center justify-center flex-wrap">
-          {state.remainingRoles.map((role) => (
-            <FlipCard
-              key={role}
-              content={role}
-              role={role}
-              flipped={false}
-              disabled
-            />
-          ))}
-          {state.roles[currentTeamIdx] && (
-            <FlipCard
-              key={state.roles[currentTeamIdx]}
-              content={state.roles[currentTeamIdx]}
-              role={state.roles[currentTeamIdx]}
-              flipped={revealedRoles.has(state.roles[currentTeamIdx])}
-              disabled
-            />
-          )}
-        </div>
+          {state.boxRoles.map((role, boxIdx) => {
+            const isOpened = revealedBoxes.has(boxIdx);
+            const teamName = getTeamForRole(role);
 
-        {/* Previous assignments */}
-        {assignedList.length > 0 && (
-          <div className="flex flex-col gap-3 mt-2">
-            {assignedList.map(({ teamName, role }) => (
-              <div
-                key={teamName}
-                className="flex items-center justify-center gap-3 px-6 py-3 rounded-xl"
-                style={{
-                  background: "rgba(255,255,255,0.85)",
-                  border: "1px solid rgba(139,105,20,0.15)",
-                  boxShadow: "0 2px 12px rgba(139,105,20,0.07)",
-                }}
-              >
-                <span
-                  className="font-bold"
-                  style={{ color: "#1a1207", fontSize: "clamp(1rem, 3vw, 1.3rem)" }}
-                >
-                  {teamName}
-                </span>
-                <svg width="20" height="10" viewBox="0 0 20 10" fill="none" aria-hidden="true">
-                  <path d="M0 5 L16 5 M12 1 L16 5 L12 9" stroke="#8B6914" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.7" />
-                </svg>
-                <span
-                  className="font-bold"
-                  style={{ color: ROLE_TEXT_COLOR[role as Role] ?? "#8B6914", fontSize: "clamp(1rem, 3vw, 1.3rem)" }}
-                >
-                  {role}
-                </span>
+            return (
+              <div key={boxIdx} className="flex flex-col items-center gap-2">
+                <FlipCard
+                  content={role}
+                  role={role}
+                  flipped={isOpened}
+                  disabled
+                  label={String(boxIdx + 1)}
+                />
+                {/* Show team name under opened box */}
+                {isOpened && teamName && (
+                  <div
+                    className="px-4 py-1.5 rounded-lg text-center animate-float-up"
+                    style={{
+                      background: "rgba(255,255,255,0.85)",
+                      border: "1px solid rgba(139,105,20,0.15)",
+                      boxShadow: "0 2px 8px rgba(139,105,20,0.07)",
+                    }}
+                  >
+                    <span
+                      className="font-bold"
+                      style={{ color: ROLE_TEXT_COLOR[role] ?? "#8B6914", fontSize: "0.85rem" }}
+                    >
+                      {teamName}
+                    </span>
+                  </div>
+                )}
               </div>
-            ))}
-          </div>
-        )}
+            );
+          })}
+        </div>
       </div>
     </div>
   );

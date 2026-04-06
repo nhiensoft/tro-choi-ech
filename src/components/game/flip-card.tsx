@@ -40,6 +40,7 @@ interface FlipCardProps {
   disabled?: boolean;
   onSelect?: () => void;
   className?: string;
+  label?: string; // number or text to show on front face instead of "?"
 }
 
 export function FlipCard({
@@ -49,6 +50,7 @@ export function FlipCard({
   disabled = false,
   onSelect,
   className,
+  label,
 }: FlipCardProps) {
   const style = role ? ROLE_STYLES[role] : ROLE_STYLES.default;
 
@@ -104,27 +106,35 @@ export function FlipCard({
             style={{ background: "rgba(139,105,20,0.3)" }}
           />
 
-          {/* Lotus icon */}
-          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
-            <ellipse cx="18" cy="18" rx="5" ry="13" fill="rgba(139,105,20,0.22)" transform="rotate(-36 18 18)" />
-            <ellipse cx="18" cy="18" rx="5" ry="13" fill="rgba(139,105,20,0.22)" transform="rotate(0 18 18)" />
-            <ellipse cx="18" cy="18" rx="5" ry="13" fill="rgba(139,105,20,0.22)" transform="rotate(36 18 18)" />
-            <ellipse cx="18" cy="18" rx="5" ry="13" fill="rgba(139,105,20,0.18)" transform="rotate(72 18 18)" />
-            <ellipse cx="18" cy="18" rx="5" ry="13" fill="rgba(139,105,20,0.18)" transform="rotate(-72 18 18)" />
-            <circle cx="18" cy="18" r="5" fill="rgba(139,105,20,0.38)" />
+          {/* Gift box icon */}
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            {/* Ribbon vertical */}
+            <rect x="21" y="8" width="6" height="32" rx="1" fill="rgba(196,30,58,0.35)" />
+            {/* Ribbon horizontal */}
+            <rect x="6" y="18" width="36" height="6" rx="1" fill="rgba(196,30,58,0.35)" />
+            {/* Box body */}
+            <rect x="6" y="20" width="36" height="20" rx="3" fill="rgba(139,105,20,0.2)" stroke="rgba(139,105,20,0.35)" strokeWidth="1.5" />
+            {/* Box lid */}
+            <rect x="4" y="16" width="40" height="8" rx="3" fill="rgba(139,105,20,0.28)" stroke="rgba(139,105,20,0.35)" strokeWidth="1.5" />
+            {/* Bow left */}
+            <ellipse cx="19" cy="14" rx="6" ry="4" fill="rgba(196,30,58,0.3)" transform="rotate(-15 19 14)" />
+            {/* Bow right */}
+            <ellipse cx="29" cy="14" rx="6" ry="4" fill="rgba(196,30,58,0.3)" transform="rotate(15 29 14)" />
+            {/* Bow center */}
+            <circle cx="24" cy="15" r="3" fill="rgba(196,30,58,0.4)" />
           </svg>
 
-          {/* "?" */}
+          {/* Number label or "?" */}
           <span
             className="font-bold select-none"
             style={{
               color: "#8B6914",
-              fontSize: "3.5rem",
+              fontSize: label ? "3rem" : "3.5rem",
               lineHeight: 1,
               textShadow: "0 0 20px rgba(139,105,20,0.3)",
             }}
           >
-            ?
+            {label ?? "?"}
           </span>
         </div>
 

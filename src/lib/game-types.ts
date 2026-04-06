@@ -38,6 +38,7 @@ export interface GameState {
   pickOrder: [number, number, number];
   roles: Record<number, Role>;
   remainingRoles: Role[];
+  boxRoles: [Role, Role, Role]; // fixed mapping: box index → role (set once, never changes)
   step: GameStep;
   currentPickerIdx: number;
   // Timer
@@ -93,6 +94,7 @@ export const initialState: GameState = {
   pickOrder: [0, 1, 2],
   roles: {},
   remainingRoles: [...ROLES],
+  boxRoles: [...ROLES] as [Role, Role, Role],
   step: "input",
   currentPickerIdx: 0,
   timerStartedAt: null,

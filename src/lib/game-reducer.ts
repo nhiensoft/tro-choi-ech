@@ -1,15 +1,17 @@
-import { type GameState, type GameAction, initialState } from "./game-types";
+import { type GameState, type GameAction, type Role, initialState } from "./game-types";
 
 export function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
     case "SET_TEAMS": {
       // pickOrder and remainingRoles are pre-computed by server-game-store (shuffle)
       // and injected before reaching the reducer; fallback to initialState values if missing
+      const shuffledRoles = (action.remainingRoles ?? initialState.remainingRoles) as [Role, Role, Role];
       return {
         ...initialState,
         teams: action.teams,
         pickOrder: action.pickOrder ?? initialState.pickOrder,
-        remainingRoles: action.remainingRoles ?? initialState.remainingRoles,
+        remainingRoles: shuffledRoles,
+        boxRoles: shuffledRoles,
         step: "rules",
         currentPickerIdx: 0,
       };
