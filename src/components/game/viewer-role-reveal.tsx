@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FlipCard } from "@/components/game/flip-card";
 import { useSound } from "@/hooks/use-sound";
-import { type GameState, type Role } from "@/lib/game-types";
+import { type GameState, type Role, ROLES } from "@/lib/game-types";
 import { DecorativeBg } from "./decorative-bg";
 
 const ROLE_TEXT_COLOR: Record<Role, string> = {
@@ -14,6 +14,7 @@ const ROLE_TEXT_COLOR: Record<Role, string> = {
 
 export function ViewerRoleReveal({ state }: { state: GameState }) {
   const { play } = useSound();
+  const boxRoles: [Role, Role, Role] = boxRoles ?? (ROLES as [Role, Role, Role]);
   const currentTeamIdx = state.pickOrder[state.currentPickerIdx];
   const currentTeamName = state.teams[currentTeamIdx];
 
@@ -26,7 +27,7 @@ export function ViewerRoleReveal({ state }: { state: GameState }) {
   // Initialize revealed boxes from existing state (for late-joining viewers)
   useEffect(() => {
     const initialRevealed = new Set<number>();
-    state.boxRoles.forEach((role, idx) => {
+    boxRoles.forEach((role, idx) => {
       if (assignedRoles.has(role)) {
         initialRevealed.add(idx);
       }
@@ -44,7 +45,7 @@ export function ViewerRoleReveal({ state }: { state: GameState }) {
       play("reveal");
       // Find newly opened box
       const newRevealed = new Set(revealedBoxes);
-      state.boxRoles.forEach((role, idx) => {
+      boxRoles.forEach((role, idx) => {
         if (assignedRoles.has(role)) {
           newRevealed.add(idx);
         }
@@ -102,7 +103,7 @@ export function ViewerRoleReveal({ state }: { state: GameState }) {
 
         {/* 3 Numbered Gift Boxes */}
         <div className="flex gap-6 items-center justify-center flex-wrap">
-          {state.boxRoles.map((role, boxIdx) => {
+          {boxRoles.map((role, boxIdx) => {
             const isOpened = revealedBoxes.has(boxIdx);
             const teamName = getTeamForRole(role);
 
